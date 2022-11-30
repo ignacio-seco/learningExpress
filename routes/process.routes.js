@@ -1,45 +1,91 @@
 import express from "express";
-import { v4 as uuidv4 } from "uuid";
-import { formatDateToDefault, stringEqualizer } from "../helpers/helpers.js";
-
+import { stringEqualizer } from "../helpers/helpers.js";
+import CowModel from "../models/cow.models.js";
 const router = express.Router();
 
-const data = [{teste:"teste"}];
-router.get("/", (request, response) => {
-  return response.status(200).json(data);
-});
-router.get("/gado/:sexo", (request, response) => {
-  const { sexo } = request.params;
-  let filterSexo = data.filter((el) => (stringEqualizer(el.sexo) = stringEqualizer(sexo)));
-  return response.status(200).json(processosDoSetor);
-});
-
-router.get("/random", (request, response) => {
-  let randomIndex = Math.floor(Math.random() * (data.length - 0) + 0);
-  return response.status(200).json(data[randomIndex]);
+router.get("/", async (request, response) => {
+  try {
+    const cattle = await CowModel.find();
+    return response.status(200).json(cattle);
+  } catch (err) {
+    console.log(err);
+    return response.status(500).json({ msg: "Algo deu muuuito errado" });
+  }
 });
 
-router.post("/new", (request, response) => {
-  const newData = {
-    ...request.body,
-    initDate: formatDateToDefault(new Date(Date.now())),
-  };
-  data.push(newData);
-  return response.status(201).json(data);
+router.get("/random", async (request, response) => {
+  try {
+    const cattle = await CowModel.find();
+    let randomIndex = Math.floor(Math.random() * (cattle.length - 0) + 0);
+    return response.status(200).json(cattle[randomIndex]);
+  } catch (err) {
+    console.log(err);
+    return response.status(500).json({ msg: "Algo errado não deu certo" });
+  }
 });
 
-router.put("/change/:id", (request, response) => {
-  const { id } = request.params;
-  const index = data.findIndex((el) => el._id === id);
-  data[index] = { ...data[index], ...request.body };
-  return response.status(200).json(data[index]);
+router.get("/:id", async (request, response) => {
+  try {
+    const { id } = request.params;
+    const oneCaw = await CowModel.findById(id);
+    if (!oneCaw) {
+      return response(404).json("usuário não encontrado");
+    }
+    return response.status(200).json(oneCaw);
+  } catch (err) {
+    console.log(err);
+    return response.status(500).json({ msg: "Algo deu muuuito errado" });
+  }
 });
 
-router.delete("/delete/:id", (request, response) => {
-  const { id } = request.params;
-  let index = data.findIndex((el) => el._id === id);
-  data.splice(index, 1);
-  return response.status(200).json(data);
+router.get("/filtro/:sexo", async (request, response) => {
+  try {
+    const { sexo } = request.params;
+    const cattle = await CowModel.find();
+    let filterSexo = cattle.filter(
+      (el) => stringEqualizer(el.sexo) === stringEqualizer(sexo)
+    );
+    return response.status(200).json(filterSexo);
+  } catch (err) {
+    console.log(err);
+    return response.status(500).json({ msg: "Algo deu muuuito errado" });
+  }
+});
+
+router.post("/new", async (request, response) => {
+  try {
+    const newCow = await CowModel.create(request.body);
+    return response.status(201).json(newCow);
+  } catch (err) {
+    console.log(err);
+    return response.status(500).json({ msg: "Algo deu muuuito errado" });
+  }
+});
+
+router.put("/change/:id", async (request, response) => {
+  try {
+    const { id } = request.params;
+    const update = await CowModel.findByIdAndUpdate(
+      id,
+      { ...request.body },
+      { new: true, runValidators: true }
+    );
+    return response.status(200).json(update);
+  } catch (err) {
+    console.log(err);
+    return response.status(500).json({ msg: "Algo deu muuuito errado" });
+  }
+});
+
+router.delete("/delete/:id", async (request, response) => {
+  try {
+    const { id } = request.params;
+    const deleteCow = await CowModel.findByIdAndDelete(id);
+    return response.status(200).json(deleteCow);
+  } catch (err) {
+    console.log(err);
+    return response.status(500).json({ msg: "Algo deu muuuito errado" });
+  }
 });
 
 export default router;

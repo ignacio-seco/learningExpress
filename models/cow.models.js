@@ -1,5 +1,5 @@
-import { model, Schema } from 'mongoose';
-import { formatDateToDefault } from '../helpers/helpers';
+import { model, Schema } from "mongoose";
+import { formatDateToDefault } from "../helpers/helpers.js";
 
 const curralPemanenciaSchema = new Schema({
   dtEntradaCurral: {
@@ -11,7 +11,7 @@ const curralPemanenciaSchema = new Schema({
   dtSaidaCurral: {
     type: String,
     match: /(^$|([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])))/,
-    default: '',
+    default: "",
   },
 });
 
@@ -53,14 +53,14 @@ const cruzamentoSchema = new Schema({
 });
 
 const cowSchema = new Schema({
-  brinco: { type: Number },
+  brinco: { type: String },
   brincoDaMae: { type: Number },
   dadosCompra: {
     comprado: { type: Boolean, default: false },
     dtCompra: {
       type: String,
       match: /(^$|([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])))/,
-      default: '',
+      default: "",
     },
     valorCompra: { type: Number },
     vendedor: { type: String },
@@ -71,9 +71,9 @@ const cowSchema = new Schema({
     dtMorte: {
       type: String,
       match: /(^$|([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])))/,
-      default: false,
+      default: "",
     },
-    causaMorte: { type: 'String' },
+    causaMorte: { type: "String" },
   },
   dtNascimento: {
     type: String,
@@ -90,21 +90,23 @@ const cowSchema = new Schema({
     dtVenda: {
       type: String,
       match: /(^$|([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])))/,
-      default: '',
+      default: "",
     },
   },
   estadaCurral: [curralPemanenciaSchema],
   historico: [historicoSchema],
   imagem_url: {
-    type: 'string',
-    default: 'https://pngimg.com/uploads/cow/cow_PNG50576.png',
+    type: String,
+    default: "https://pngimg.com/uploads/cow/cow_PNG50576.png",
   },
   noCurral: { type: Boolean, default: false },
   nome: { type: String, required: true },
-  pasto: { type: String, default: '' },
+  pasto: { type: String, default: "" },
   pesagem: [pesagemSchema],
   producaoLeite: [litragemSchema],
-  sexo: { type: String, enum: ['MACHO', 'FEMEA'], required: true },
-});
-const CowSchema = model('Cow', cowSchema);
-export default CowSchema;
+  sexo: { type: String, enum: ["MACHO", "FEMEA"], required: true },
+  
+},
+{timestamps:true} );
+const CowModel = model("Cow", cowSchema);
+export default CowModel;
