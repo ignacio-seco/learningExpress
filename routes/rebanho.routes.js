@@ -1,11 +1,25 @@
 import express from "express";
 import { stringEqualizer } from "../helpers/helpers.js";
 import CowModel from "../models/cow.models.js";
+import CruzamentoModel from "../models/cruzamento.models.js";
+import CurralPermanenciaModel from "../models/curralPermanencia.models.js";
+import HistoricoModel from "../models/historico.models.js";
+import LitragemModel from "../models/litragem.models.js";
+import PesagemModel from "../models/pesagem.models.js";
 const router = express.Router();
+const basemodel = CowModel;
 
 router.get("/", async (request, response) => {
   try {
-    const cattle = await CowModel.find();
+    const cattle = await basemodel
+      .find()
+      .populate([
+        "dadosCruzamentos",
+        "pesagem",
+        "producaoLeite",
+        "historico",
+        "estadaCurral",
+      ]);
     return response.status(200).json(cattle);
   } catch (err) {
     console.log(err);
@@ -15,7 +29,7 @@ router.get("/", async (request, response) => {
 
 router.get("/random", async (request, response) => {
   try {
-    const cattle = await CowModel.find();
+    const cattle = await basemodel.find();
     let randomIndex = Math.floor(Math.random() * (cattle.length - 0) + 0);
     return response.status(200).json(cattle[randomIndex]);
   } catch (err) {
@@ -27,9 +41,17 @@ router.get("/random", async (request, response) => {
 router.get("/:id", async (request, response) => {
   try {
     const { id } = request.params;
-    const oneCaw = await CowModel.findById(id);
+    const oneCaw = await basemodel
+      .findById(id)
+      .populate([
+        "dadosCruzamentos",
+        "pesagem",
+        "producaoLeite",
+        "historico",
+        "estadaCurral",
+      ]);
     if (!oneCaw) {
-      return response(404).json("usuário não encontrado");
+      return response(404).json({ msg: "usuário não encontrado" });
     }
     return response.status(200).json(oneCaw);
   } catch (err) {
@@ -41,7 +63,7 @@ router.get("/:id", async (request, response) => {
 router.get("/filtro/:sexo", async (request, response) => {
   try {
     const { sexo } = request.params;
-    const cattle = await CowModel.find();
+    const cattle = await basemodel.find();
     let filterSexo = cattle.filter(
       (el) => stringEqualizer(el.sexo) === stringEqualizer(sexo)
     );
@@ -54,7 +76,7 @@ router.get("/filtro/:sexo", async (request, response) => {
 
 router.post("/new", async (request, response) => {
   try {
-    const newCow = await CowModel.create(request.body);
+    const newCow = await basemodel.create(request.body);
     return response.status(201).json(newCow);
   } catch (err) {
     console.log(err);
@@ -65,7 +87,7 @@ router.post("/new", async (request, response) => {
 router.put("/change/:id", async (request, response) => {
   try {
     const { id } = request.params;
-    const update = await CowModel.findByIdAndUpdate(
+    const update = await basemodel.findByIdAndUpdate(
       id,
       { ...request.body },
       { new: true, runValidators: true }
@@ -80,7 +102,12 @@ router.put("/change/:id", async (request, response) => {
 router.delete("/delete/:id", async (request, response) => {
   try {
     const { id } = request.params;
-    const deleteCow = await CowModel.findByIdAndDelete(id);
+    const deleteCow = await basemodel.findByIdAndDelete(id);
+    await CruzamentoModel.deleteMany({ animal: id });
+    await CurralPermanenciaModel.deleteMany({ animal: id });
+    await HistoricoModel.deleteMany({ animal: id });
+    await LitragemModel.deleteMany({ animal: id });
+    await PesagemModel.deleteMany({ animal: id });
     return response.status(200).json(deleteCow);
   } catch (err) {
     console.log(err);

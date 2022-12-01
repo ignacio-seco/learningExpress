@@ -16,3 +16,14 @@ export function stringEqualizer(string) {
     .replaceAll(/[õòóöô]/g, 'o')
     .replaceAll(/[úùü]/g, 'u');
 }
+
+export function calculateBirthDate(initialDate) {
+  if (initialDate === "") {
+    return "sem dados de nascimento";
+  } else {
+    let dob = new Date(initialDate);
+    let birthTime = dob.getTime()+(283*24*60*60*1000);
+    let birthDay=formatDateToDefault(new Date(birthTime))
+    return birthDay;
+  }
+}
