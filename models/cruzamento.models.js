@@ -1,9 +1,10 @@
-import { model, Schema } from "mongoose";
-import { calculateBirthDate } from "../helpers/helpers.js";
+import { model, Schema } from 'mongoose';
+import { calculateBirthDate } from '../helpers/helpers.js';
 
 const cruzamentoSchema = new Schema(
   {
-    animal: { type: Schema.Types.ObjectId, ref: "Cow" },
+    animal: { type: Schema.Types.ObjectId, ref: 'Cow' },
+    semen: { type: String, default: 'não informado' },
     dtCruzamento: {
       type: String,
       match: /([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))/,
@@ -16,10 +17,10 @@ const cruzamentoSchema = new Schema(
     dtProvavelNascimento: {
       type: String,
       match: /(^$|([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])))/,
-      default: "",
+      default: '',
     },
   },
   { timestamps: true }
 );
-const CruzamentoModel = model("Cruzamento", cruzamentoSchema);
+const CruzamentoModel = model('Cruzamento', cruzamentoSchema);
 export default CruzamentoModel;
