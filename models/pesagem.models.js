@@ -3,7 +3,6 @@ import { calculateBirthDate, formatDateToDefault } from '../helpers/helpers.js';
 
 const pesagemSchema = new Schema(
   {
-    animal: { type: Schema.Types.ObjectId, ref: 'Cow' },
     peso: { type: Number, required: true },
     dtPesagem: {
       type: String,
@@ -15,5 +14,4 @@ const pesagemSchema = new Schema(
   { timestamps: true }
 );
 
-const PesagemModel = model('Pesagem', pesagemSchema);
-export default PesagemModel;
+export default pesagemSchema;

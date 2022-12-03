@@ -3,8 +3,7 @@ import { formatDateToDefault } from '../helpers/helpers.js';
 
 const curralPermanenciaSchema = new Schema(
   {
-    animal: { type: Schema.Types.ObjectId, ref: 'Cow' },
-    dtEntradaCurral: {
+ dtEntradaCurral: {
       type: String,
       match: /([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))/,
       required: true,
@@ -19,8 +18,5 @@ const curralPermanenciaSchema = new Schema(
   { timestamps: true }
 );
 
-const CurralPermanenciaModel = model(
-  'CurralPermanencia',
-  curralPermanenciaSchema
-);
-export default CurralPermanenciaModel;
+
+export default curralPermanenciaSchema;

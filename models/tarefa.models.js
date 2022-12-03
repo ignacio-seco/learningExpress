@@ -1,9 +1,8 @@
-import { model, Schema } from 'mongoose';
+import { Schema } from 'mongoose';
 import { formatDateToDefault } from '../helpers/helpers.js';
 
 const tarefaSchema = new Schema(
   {
-    propriedade: { type: Schema.Types.ObjectId, ref: 'Propriedade' },
     dtCriacao: {
       type: String,
       match: /([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))/,
@@ -17,5 +16,4 @@ const tarefaSchema = new Schema(
   { timestamps: true }
 );
 
-const TarefaModel = model('Tarefa', tarefaSchema);
-export default TarefaModel;
+export default tarefaSchema;

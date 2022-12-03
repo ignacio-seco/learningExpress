@@ -1,20 +1,5 @@
-import { Schema } from 'mongoose';
+import { model } from "mongoose";
+import propriedadeSchema from "./propriedadeSchema.models.js";
 
-const propriedadeSchema = new Schema(
-  {
-    nome: { type: String },
-    rebanho: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: 'Cow',
-      },
-    ],
-    pastos: [String],
-    controleFinanceiro: {
-      gastos: [{ type: Schema.Types.ObjectId, ref: 'Gasto' }],
-      ganhos: [{ type: Schema.Types.ObjectId, ref: 'Ganho' }],
-    },
-    tarefas: [{ type: Schema.Types.ObjectId, ref: 'Tarefa' }],
-  },
-  { timestamps: true }
-);
+const PropriedadeModel = model("Propriedade", propriedadeSchema)
+export default PropriedadeModel

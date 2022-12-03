@@ -3,7 +3,6 @@ import { formatDateToDefault } from '../helpers/helpers.js';
 
 const litragemSchema = new Schema(
   {
-    animal: { type: Schema.Types.ObjectId, ref: 'Cow' },
     qtdLitros: { type: Number, required: true },
     dtVerificacao: {
       type: String,
@@ -15,5 +14,5 @@ const litragemSchema = new Schema(
   { timestamps: true }
 );
 
-const LitragemModel = model('Litragem', litragemSchema);
-export default LitragemModel;
+
+export default litragemSchema;

@@ -4,8 +4,7 @@ import { formatDateToDefault } from '../helpers/helpers.js';
 
 const ganhoSchema = new Schema(
   {
-    propriedade: { type: Schema.Types.ObjectId, ref: 'Propriedade' },
-    dtGanho: {
+     dtGanho: {
       type: String,
       match: /([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))/,
       required: true,
@@ -17,5 +16,4 @@ const ganhoSchema = new Schema(
   { timestamps: true }
 );
 
-const GanhoModel = model('Ganho', ganhoSchema);
-export default GanhoModel;
+export default ganhoSchema;

@@ -3,7 +3,6 @@ import { calculateBirthDate, formatDateToDefault } from '../helpers/helpers.js';
 
 const historicoSchema = new Schema(
   {
-    animal: { type: Schema.Types.ObjectId, ref: 'Cow' },
     dtHistorico: {
       type: String,
       match: /([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))/,
@@ -15,5 +14,5 @@ const historicoSchema = new Schema(
   { timestamps: true }
 );
 
-const HistoricoModel = model('Historico', historicoSchema);
-export default HistoricoModel;
+
+export default historicoSchema;
