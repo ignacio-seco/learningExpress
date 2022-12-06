@@ -9,7 +9,7 @@ import pesagemSchema from './pesagem.models.js';
 const cowSchema = new Schema(
   {
     uuid: { type: String, default: uuidv4() },
-    brinco: { type: String, required: true, default: '' },
+    brinco: { type: String, default: '-' },
     brincoDaMae: { type: String },
     dadosCompra: {
       comprado: { type: Boolean, default: false },
