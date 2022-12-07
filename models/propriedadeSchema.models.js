@@ -6,6 +6,8 @@ import tarefaSchema from './tarefa.models.js';
 
 const propriedadeSchema = new Schema(
   {
+    user:{type: Schema.Types.ObjectId,
+    ref:"User" },
     nome: { type: String, required: true },
     rebanho: [cowSchema],
     pastos: [String],
