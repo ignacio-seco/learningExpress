@@ -6,8 +6,10 @@ import CurralPermanenciaModel from '../models/curralPermanencia.models.js';
 import HistoricoModel from '../models/historico.models.js';
 import LitragemModel from '../models/litragem.models.js';
 import PesagemModel from '../models/pesagem.models.js';
+import PropriedadeModel from '../models/propriedade.models.js';
 const router = express.Router();
 const basemodel = CowModel;
+const relationModel = PropriedadeModel;
 
 router.get('/', async (request, response) => {
   try {
@@ -27,17 +29,6 @@ router.get('/', async (request, response) => {
   }
 });
 
-router.get('/random', async (request, response) => {
-  try {
-    const cattle = await basemodel.find();
-    let randomIndex = Math.floor(Math.random() * (cattle.length - 0) + 0);
-    return response.status(200).json(cattle[randomIndex]);
-  } catch (err) {
-    console.log(err);
-    return response.status(500).json({ msg: 'Algo errado não deu certo' });
-  }
-});
-
 router.get('/:id', async (request, response) => {
   try {
     const { id } = request.params;
@@ -51,7 +42,7 @@ router.get('/:id', async (request, response) => {
         'estadaCurral',
       ]);
     if (!oneCaw) {
-      return response(404).json({ msg: 'usuário não encontrado' });
+      return response(404).json({ msg: 'animal não encontrado' });
     }
     return response.status(200).json(oneCaw);
   } catch (err) {
@@ -74,9 +65,14 @@ router.get('/:sexo', async (request, response) => {
   }
 });
 
-router.post('/new', async (request, response) => {
+router.post('/new/:id', async (request, response) => {
   try {
-    const newCow = await basemodel.create(request.body);
+    const { id } = request.params;
+    const newCow = await basemodel.create({ ...request.body, propriedade: id });
+    await relationModel.findByIdAndUpdate(id, {
+      $push: { rebanho: newCow._id },
+    });
+
     return response.status(201).json(newCow);
   } catch (err) {
     console.log(err);
@@ -103,6 +99,9 @@ router.delete('/delete/:id', async (request, response) => {
   try {
     const { id } = request.params;
     const deleteCow = await basemodel.findByIdAndDelete(id);
+    await relationModel.findByIdAndUpdate(deleteCow.propriedade, {
+      $pull: { rebanho: id },
+    });
     await CruzamentoModel.deleteMany({ animal: id });
     await CurralPermanenciaModel.deleteMany({ animal: id });
     await HistoricoModel.deleteMany({ animal: id });
