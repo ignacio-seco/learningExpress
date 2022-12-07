@@ -9,6 +9,7 @@ import PropriedadeModel from '../models/propriedade.models.js';
 import UserModel from '../models/user.models.js';
 import GanhoModel from '../models/ganhos.models.js';
 import GastoModel from '../models/gastos.models.js';
+import TarefaModel from '../models/tarefa.models.js';
 const router = express.Router();
 const basemodel = PropriedadeModel;
 const relationModel = UserModel;
@@ -86,6 +87,7 @@ router.delete('/delete/:id', async (request, response) => {
     });
     await GanhoModel.deleteMany({ propriedade: id });
     await GastoModel.deleteMany({ propriedade: id });
+    await TarefaModel.deleteMany({ propriedade: id });
     await relationModel.findByIdAndUpdate(deleteData.usuario, {
       $pull: { propriedades: id },
     });
