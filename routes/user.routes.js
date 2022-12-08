@@ -42,7 +42,7 @@ router.post('/signup', async (request, response) => {
 router.post('/login', async (request, response) => {
   try {
     const { email, password } = request.body;
-    const user = basemodel.findOne({ email: email });
+    const user = await basemodel.findOne({ email: email });
     if (!user) {
       return response.status(400).json({ msg: 'Usuário não cadastrado' });
     }
