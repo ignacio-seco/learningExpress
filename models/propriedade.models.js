@@ -12,17 +12,21 @@ const propriedadeSchema = new Schema(
       },
     ],
     pastos: [String],
-    controleFinanceiro: {
-      gastos: [{ type: Schema.Types.ObjectId, ref: 'Gasto' }],
-      ganhos: [{ type: Schema.Types.ObjectId, ref: 'Ganho' }],
-    },
+    gastos: [{ type: Schema.Types.ObjectId, ref: 'Gasto' }],
+    ganhos: [{ type: Schema.Types.ObjectId, ref: 'Ganho' }],
     tarefas: [{ type: Schema.Types.ObjectId, ref: 'Tarefa' }],
     oldId: { type: String },
     backupVersion: { type: Number, default: 0 },
-    colecao:{type:String,
-      default:'propriedade'},
-      lastUpdate:{type:Number,
-      default:(new Date(Date.now())).getTime()}
+    dadosServidor:{
+      colecao:{type:String,
+        default:'propriedade'},
+        relacao:{type:String,
+          default:'user'},
+        referencia:{type:String,
+        default:'propriedades'},  
+        lastUpdate:{type:Number,
+        default:(new Date(Date.now())).getTime()}
+    },
   },
   { timestamps: true }
 );

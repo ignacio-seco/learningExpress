@@ -13,10 +13,16 @@ const tarefaSchema = new Schema(
     urgente: { type: Boolean, required: true, default: false },
     descricao: { type: String, required: true },
     concluida: { type: Boolean, required: true, default: false },
-    colecao:{type:String,
-      default:'tarefa'},
-      lastUpdate:{type:Number,
-      default:(new Date(Date.now())).getTime()}
+    dadosServidor:{
+      colecao:{type:String,
+        default:'tarefa'},
+        relacao:{type:String,
+          default:'propriedade'},
+        referencia:{type:String,
+        default:'tarefas'},  
+        lastUpdate:{type:Number,
+        default:(new Date(Date.now())).getTime()}
+    },
   },
   { timestamps: true }
 );

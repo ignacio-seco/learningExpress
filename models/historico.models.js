@@ -11,10 +11,16 @@ const historicoSchema = new Schema(
       default: formatDateToDefault(new Date(Date.now())),
     },
     descricao: { type: String, required: true },
-    colecao:{type:String,
-      default:'historico'},
-      lastUpdate:{type:Number,
-      default:(new Date(Date.now())).getTime()}
+    dadosServidor:{
+      colecao:{type:String,
+        default:'historico'},
+        relacao:{type:String,
+          default:'cow'},
+        referencia:{type:String,
+        default:'historico'},  
+        lastUpdate:{type:Number,
+        default:(new Date(Date.now())).getTime()}
+    },
   },
   { timestamps: true }
 );

@@ -11,10 +11,16 @@ const pesagemSchema = new Schema(
       required: true,
       default: formatDateToDefault(new Date(Date.now())),
     },
-    colecao:{type:String,
-      default:'pesagem'},
-      lastUpdate:{type:Number,
-      default:(new Date(Date.now())).getTime()}
+    dadosServidor:{
+      colecao:{type:String,
+        default:'pesagem'},
+        relacao:{type:String,
+          default:'cow'},
+        referencia:{type:String,
+        default:'pesagem'},  
+        lastUpdate:{type:Number,
+        default:(new Date(Date.now())).getTime()}
+    },
   },
   { timestamps: true }
 );

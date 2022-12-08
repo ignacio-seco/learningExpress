@@ -82,11 +82,17 @@ const cowSchema = new Schema(
       },
     ],
     sexo: { type: String, enum: ['MACHO', 'FEMEA'], required: true },
+    dadosServidor:{
     colecao:{type:String,
       default:'cow'},
+      relacao:{type:String,
+        default:'propriedade'},
+      referencia:{type:String,
+      default:'rebanho'},  
       lastUpdate:{type:Number,
       default:(new Date(Date.now())).getTime()}
   },
+},
   { timestamps: true }
 );
 const CowModel = model('Cow', cowSchema);

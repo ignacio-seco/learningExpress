@@ -19,10 +19,16 @@ const cruzamentoSchema = new Schema(
       match: /(^$|([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])))/,
       default: '',
     },
-    colecao:{type:String,
-      default:'cruzamento'},
-      lastUpdate:{type:Number,
-      default:(new Date(Date.now())).getTime()}
+    dadosServidor:{
+      colecao:{type:String,
+        default:'cruzamento'},
+        relacao:{type:String,
+          default:'cow'},
+        referencia:{type:String,
+        default:'dadosCruzamento'},  
+        lastUpdate:{type:Number,
+        default:(new Date(Date.now())).getTime()}
+    },
   },
   { timestamps: true }
 );
