@@ -13,6 +13,10 @@ const ganhoSchema = new Schema(
     },
     valor: { type: Number, required: true, default: 0 },
     descricao: { type: String, required: true },
+    colecao:{type:String,
+      default:'ganhos'},
+      lastUpdate:{type:Number,
+      default:(new Date(Date.now())).getTime()}
   },
   { timestamps: true }
 );

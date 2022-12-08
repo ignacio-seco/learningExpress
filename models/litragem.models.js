@@ -11,6 +11,10 @@ const litragemSchema = new Schema(
       required: true,
       default: formatDateToDefault(new Date(Date.now())),
     },
+    colecao:{type:String,
+      default:'litragem'},
+      lastUpdate:{type:Number,
+      default:(new Date(Date.now())).getTime()}
   },
   { timestamps: true }
 );

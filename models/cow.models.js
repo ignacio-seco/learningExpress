@@ -82,6 +82,10 @@ const cowSchema = new Schema(
       },
     ],
     sexo: { type: String, enum: ['MACHO', 'FEMEA'], required: true },
+    colecao:{type:String,
+      default:'cow'},
+      lastUpdate:{type:Number,
+      default:(new Date(Date.now())).getTime()}
   },
   { timestamps: true }
 );
