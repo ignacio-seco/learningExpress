@@ -1,4 +1,4 @@
-const userIsCreator = async (baseModel) => {
+const userIsCreator = (baseModel) => {
   return async (request, response, next) => {
     try {
       const data = await baseModel.findById(request.params);

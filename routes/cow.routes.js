@@ -13,12 +13,7 @@ const router = express.Router();
 const basemodel = CowModel;
 const relationModel = PropriedadeModel;
 
-router.get(
-  '/:id',
-  isAuth,
-  attachCurrentUser,
-  userIsCreator(basemodel),
-  async (request, response) => {
+router.get('/:id',  isAuth,  attachCurrentUser,  userIsCreator(basemodel), async (request, response) => {
     try {
       const { id } = request.params;
       const oneCaw = await basemodel

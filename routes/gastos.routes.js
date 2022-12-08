@@ -3,6 +3,7 @@ import attachCurrentUser from '../middlewares/attachCurrentUser.js';
 import isAuth from '../middlewares/isAuth.js';
 import GastoModel from '../models/gastos.models.js';
 import PropriedadeModel from '../models/propriedade.models.js';
+import userIsCreator from '../middlewares/userIsCreator.js';
 const router = express.Router();
 
 const basemodel = GastoModel;

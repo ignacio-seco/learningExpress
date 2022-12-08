@@ -1,6 +1,7 @@
 import express from 'express';
 import attachCurrentUser from '../middlewares/attachCurrentUser.js';
 import isAuth from '../middlewares/isAuth.js';
+import userIsCreator from '../middlewares/userIsCreator.js';
 import GanhoModel from '../models/ganhos.models.js';
 import PropriedadeModel from '../models/propriedade.models.js';
 const router = express.Router();
