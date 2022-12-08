@@ -61,7 +61,29 @@ router.post('/login', async (request, response) => {
 
 router.get('/perfil', isAuth, attachCurrentUser, async (request, response) => {
   try {
-    return response.status(200).json(request.currentUser);
+    const oneproperty = await basemodel
+      .findById(request.currentUser._id)
+      .populate(['rebanho', 'gastos', 'ganhos', 'tarefas'])
+      .populate([
+        {
+          path: 'rebanho',
+          populate: { path: 'dadosCruzamento', model: 'Cruzamento' },
+        },
+        {
+          path: 'rebanho',
+          populate: { path: 'estadaCurral', model: 'CurralPermanencia' },
+        },
+        {
+          path: 'rebanho',
+          populate: { path: 'historico', model: 'Historico' },
+        },
+        { path: 'rebanho', populate: { path: 'pesagem', model: 'Pesagem' } },
+        {
+          path: 'rebanho',
+          populate: { path: 'producaoLeite', model: 'Litragem' },
+        },
+      ]);
+    return response.status(200).json(oneproperty);
   } catch (error) {
     console.log(error);
     return response.status(500).json({ msg: 'Algo deu muuuito errado', error });
