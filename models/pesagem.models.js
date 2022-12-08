@@ -1,5 +1,6 @@
 import { model, Schema } from 'mongoose';
 import { calculateBirthDate, formatDateToDefault } from '../helpers/helpers.js';
+import { v4 as uuidv4 } from 'uuid';
 
 const pesagemSchema = new Schema(
   {
