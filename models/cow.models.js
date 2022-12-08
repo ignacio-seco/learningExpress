@@ -3,8 +3,8 @@ import { v4 as uuidv4 } from 'uuid';
 
 const cowSchema = new Schema(
   {
+    creator: { type: Schema.Types.ObjectId, ref: 'Propriedade' },
     uuid: { type: String, default: uuidv4() },
-    propriedade: { type: Schema.Types.ObjectId, ref: 'Propriedade' },
     brinco: { type: String },
     brincoDaMae: { type: String },
     dadosCompra: {
@@ -82,17 +82,14 @@ const cowSchema = new Schema(
       },
     ],
     sexo: { type: String, enum: ['MACHO', 'FEMEA'], required: true },
-    dadosServidor:{
-    colecao:{type:String,
-      default:'cow'},
-      relacao:{type:String,
-        default:'propriedade'},
-      referencia:{type:String,
-      default:'rebanho'},  
-      lastUpdate:{type:Number,
-      default:(new Date(Date.now())).getTime()}
+    dadosServidor: {
+      colecao: { type: String, default: 'cow' },
+      relacao: { type: String, default: 'propriedade' },
+      referencia: { type: String, default: 'rebanho' },
+      lastUpdate: { type: Number, default: new Date(Date.now()).getTime() },
+      deletado: { type: Boolean, default: false, required: true },
+    },
   },
-},
   { timestamps: true }
 );
 const CowModel = model('Cow', cowSchema);

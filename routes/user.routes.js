@@ -1,15 +1,13 @@
 //para continuar amanhã => seguir o guia da professora Karen => https://karenokasaki.notion.site/karenokasaki/Autentica-o-852509954c1747f6a156606e433ea04d
 
 import express from 'express';
-import UserModel from '../models/user.models.js';
 import bcrypt from 'bcrypt';
-import PropriedadeModel from '../models/propriedade.models.js';//ainda não fiz a rota de deletar usuários, mas ela vai precisar de todos os outros models...
-//talvez seja uma boa ideia que o usuário conste em todas as models para facilitar autenticação
+import PropriedadeModel from '../models/propriedade.models.js';
 import generateToken from '../config/jwt.config.js';
 import isAuth from '../middlewares/isAuth.js';
 import attachCurrentUser from '../middlewares/attachCurrentUser.js';
 const router = express.Router();
-const basemodel = UserModel;
+const basemodel = PropriedadeModel;
 const saltRounds = 10;
 
 router.post('/signup', async (request, response) => {
@@ -125,15 +123,29 @@ router.put(
   }
 );
 
-/*router.delete('/delete/:id', async (request, response) => {
-  try {
-    const { id } = request.params;
-    const deleteproperty = await basemodel.findByIdAndDelete(id);
-    return response.status(200).json(deleteproperty);
-  } catch (err) {
-    console.log(err);
-    return response.status(500).json({ msg: 'Algo deu muuuito errado' });
+router.delete(
+  '/delete',
+  isAuth,
+  attachCurrentUser,
+  async (request, response) => {
+    try {
+      const id = request.currentUser._id;
+      const deleteData = await basemodel.findByIdAndDelete(id);
+      await CowModel.deleteMany({ creator: id });
+      await CruzamentoModel.deleteMany({ creator: id });
+      await CurralPermanenciaModel.deleteMany({ creator: id });
+      await HistoricoModel.deleteMany({ creator: id });
+      await LitragemModel.deleteMany({ creator: id });
+      await PesagemModel.deleteMany({ creator: id });
+      await GanhoModel.deleteMany({ creator: id });
+      await GastoModel.deleteMany({ creator: id });
+      await TarefaModel.deleteMany({ creator: id });
+      return response.status(200).json(deleteData);
+    } catch (err) {
+      console.log(err);
+      return response.status(500).json({ msg: 'Algo deu muuuito errado' });
+    }
   }
-});*/
+);
 
 export default router;

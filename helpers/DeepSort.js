@@ -5,7 +5,6 @@ import HistoricoModel from '../models/historico.models.js';
 import LitragemModel from '../models/litragem.models.js';
 import PesagemModel from '../models/pesagem.models.js';
 import PropriedadeModel from '../models/propriedade.models.js';
-import UserModel from '../models/user.models.js';
 import GanhoModel from '../models/ganhos.models.js';
 import GastoModel from '../models/gastos.models.js';
 import TarefaModel from '../models/tarefa.models.js';
@@ -18,11 +17,11 @@ const collections = {
   litragem: LitragemModel,
   pesagem: PesagemModel,
   propriedade: PropriedadeModel,
-  user: UserModel,
   ganhos: GanhoModel,
   gastos: GastoModel,
   tarefa: TarefaModel,
 };
+
 
 let jsonArr = [
   {

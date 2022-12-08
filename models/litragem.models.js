@@ -3,6 +3,8 @@ import { formatDateToDefault } from '../helpers/helpers.js';
 
 const litragemSchema = new Schema(
   {
+    creator: { type: Schema.Types.ObjectId, ref: 'Propriedade' },
+    uuid: { type: String, default: uuidv4() },
     animal: { type: Schema.Types.ObjectId, ref: 'Cow' },
     qtdLitros: { type: Number, required: true },
     dtVerificacao: {
@@ -11,15 +13,11 @@ const litragemSchema = new Schema(
       required: true,
       default: formatDateToDefault(new Date(Date.now())),
     },
-    dadosServidor:{
-      colecao:{type:String,
-        default:'litragem'},
-        relacao:{type:String,
-          default:'cow'},
-        referencia:{type:String,
-        default:'producaoLeite'},  
-        lastUpdate:{type:Number,
-        default:(new Date(Date.now())).getTime()}
+    dadosServidor: {
+      colecao: { type: String, default: 'litragem' },
+      relacao: { type: String, default: 'cow' },
+      referencia: { type: String, default: 'producaoLeite' },
+      lastUpdate: { type: Number, default: new Date(Date.now()).getTime() },
     },
   },
   { timestamps: true }

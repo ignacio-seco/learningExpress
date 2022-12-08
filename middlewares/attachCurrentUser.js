@@ -1,9 +1,8 @@
-import UserModel from '../models/user.models.js';
-
+import PropriedadeModel from "../models/propriedade.models.js"
 async function attachCurrentUser(request, response, next) {
   try {
     const userData = request.auth; // dados que estão no token
-    const user = await UserModel.findById(userData._id, {passwordHash:0}).populate("propriedades");
+    const user = await PropriedadeModel.findById(userData._id, {passwordHash:0});
     if (!user) {
       return response.status(400).json({ erro: 'usuário não localizado' });
     }

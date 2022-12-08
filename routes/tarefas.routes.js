@@ -1,27 +1,34 @@
 import express from 'express';
-import TarefaModel from '../models/tarefa.models.js';
+import attachCurrentUser from '../middlewares/attachCurrentUser.js';
+import isAuth from '../middlewares/isAuth.js';
 import PropriedadeModel from '../models/propriedade.models.js';
+import TarefaModel from '../models/tarefa.models.js';
 const router = express.Router();
 
 const basemodel = TarefaModel;
 const relationModel = PropriedadeModel;
 
-router.get('/', async (request, response) => {
-  try {
-    const allData = await basemodel.find();
-    return response.status(200).json(allData);
-  } catch (err) {
-    console.log(err);
-    return response.status(500).json({ msg: 'Algo deu muuuito errado' });
+router.get(
+  '/:id',
+  isAuth,
+  attachCurrentUser,
+  userIsCreator(basemodel),
+  async (request, response) => {
+    try {
+      return response.status(200).json(request.currentData);
+    } catch (err) {
+      console.log(err);
+      return response.status(500).json({ msg: 'Algo deu muuuito errado' });
+    }
   }
-});
+);
 
-router.post('/new/:id', async (request, response) => {
+router.post('/new', isAuth, attachCurrentUser, async (request, response) => {
   try {
-    const { id } = request.params;
+    const id = request.currentUser._id;
     const newData = await basemodel.create({
       ...request.body,
-      propriedade: id,
+      creator: id,
     });
     await relationModel.findByIdAndUpdate(id, {
       $push: { tarefas: newData._id },
@@ -53,7 +60,7 @@ router.delete('/delete/:id', async (request, response) => {
   try {
     const { id } = request.params;
     const deleteData = await basemodel.findByIdAndDelete(id);
-    await relationModel.findByIdAndUpdate(deleteData.propriedade, {
+    await relationModel.findByIdAndUpdate(deleteData.creator, {
       $pull: { tarefas: id },
     });
     return response.status(200).json(deleteData);

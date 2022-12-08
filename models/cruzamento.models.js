@@ -3,6 +3,8 @@ import { calculateBirthDate } from '../helpers/helpers.js';
 
 const cruzamentoSchema = new Schema(
   {
+    creator: { type: Schema.Types.ObjectId, ref: 'Propriedade' },
+    uuid: { type: String, default: uuidv4() },
     animal: { type: Schema.Types.ObjectId, ref: 'Cow' },
     semen: { type: String, default: 'não informado' },
     dtCruzamento: {
@@ -19,15 +21,11 @@ const cruzamentoSchema = new Schema(
       match: /(^$|([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])))/,
       default: '',
     },
-    dadosServidor:{
-      colecao:{type:String,
-        default:'cruzamento'},
-        relacao:{type:String,
-          default:'cow'},
-        referencia:{type:String,
-        default:'dadosCruzamento'},  
-        lastUpdate:{type:Number,
-        default:(new Date(Date.now())).getTime()}
+    dadosServidor: {
+      colecao: { type: String, default: 'cruzamento' },
+      relacao: { type: String, default: 'cow' },
+      referencia: { type: String, default: 'dadosCruzamento' },
+      lastUpdate: { type: Number, default: new Date(Date.now()).getTime() },
     },
   },
   { timestamps: true }
