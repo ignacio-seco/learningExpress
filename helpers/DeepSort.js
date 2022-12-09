@@ -896,6 +896,6 @@ function setToMongoFormat(updateObject, idkey) {
 let dataToPass = setToMongoFormat(updateArray, "_id");
 console.log(Object.keys(dataToPass));
 //console.log(dataToPass["638f86be48b1883567633bde"][0]["producaoLeite"]);
-//console.log(dataToPass["638aa5d8e56f87444ebcb65f"][0]["pastos"])
-//console.log(dataToPass["638aa5d8e56f87444ebcb65f"][0]["rebanho"])
+console.log(dataToPass["638aa5d8e56f87444ebcb65f"][0]["pastos"])
+console.log(dataToPass["638aa5d8e56f87444ebcb65f"][0]["rebanho"])
 //console.log(dataToPass["638f8e9e48b1883567635122"])

@@ -8,8 +8,9 @@ import pesagemSchema from './pesagem.models.js';
 
 const cowSchema = new Schema(
   {
+    creator: { type: Schema.Types.ObjectId, ref: 'Propriedade' },
     uuid: { type: String, default: uuidv4() },
-    brinco: { type: String, default: '-' },
+    brinco: { type: String },
     brincoDaMae: { type: String },
     dadosCompra: {
       comprado: { type: Boolean, default: false },
@@ -36,9 +37,6 @@ const cowSchema = new Schema(
       match: /(^$|([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])))/,
       required: true,
     },
-    dadosVacinas: [
-      //a ser implementado
-    ],
     dadosVenda: {
       vendida: {
         type: Boolean,
@@ -64,6 +62,13 @@ const cowSchema = new Schema(
     pesagem: [pesagemSchema],
     producaoLeite: [litragemSchema],
     sexo: { type: String, enum: ['MACHO', 'FEMEA'], required: true },
+    dadosServidor: {
+      colecao: { type: String, default: 'cow' },
+      relacao: { type: String, default: 'propriedade' },
+      referencia: { type: String, default: 'rebanho' },
+      lastUpdate: { type: Number, default: new Date(Date.now()).getTime() },
+      deletado: { type: Boolean, default: false, required: true },
+    },
   },
   { timestamps: true }
 );
