@@ -62,7 +62,7 @@ router.post('/login', async (request, response) => {
 router.get('/perfil', isAuth, attachCurrentUser, async (request, response) => {
   try {
     const oneproperty = await basemodel
-      .findById(request.currentUser._id)
+      .findById(request.currentUser._id, {passwordHash: 0})
       .populate(['rebanho', 'gastos', 'ganhos', 'tarefas'])
       .populate([
         {

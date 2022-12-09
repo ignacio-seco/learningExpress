@@ -6,7 +6,9 @@ async function attachCurrentUser(request, response, next) {
     if (!user) {
       return response.status(400).json({ erro: 'usuário não localizado' });
     }
+    delete user.passwordHash
     request.currentUser = user;
+
     next();
   } catch (err) {
     console.log(err);

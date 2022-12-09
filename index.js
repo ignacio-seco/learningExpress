@@ -10,12 +10,13 @@ import userRouter from './routes/user.routes.js';
 import ganhosRouter from './routes/ganhos.routes.js';
 import gastosRouter from './routes/gastos.routes.js';
 import tarefasRouter from './routes/tarefas.routes.js';
-
+import cors from 'cors';
 import { connect } from './config/db.config.js';
 
 dotenv.config();
 connect();
 const app = express();
+app.use(cors());
 app.use(express.json());
 app.use('/animais', cowRouter);
 app.use('/cruzamento', cruzamentoRouter);
