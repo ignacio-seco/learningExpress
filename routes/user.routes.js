@@ -5,6 +5,7 @@
 import express from 'express';
 import bcrypt from 'bcrypt';
 import PropriedadeModel from '../models/propriedade.models.js';
+import PropertyBackupModel from '../models/propertyBackup.models.js';
 import generateToken from '../config/jwt.config.js';
 import isAuth from '../middlewares/isAuth.js';
 import attachCurrentUser from '../middlewares/attachCurrentUser.js';
