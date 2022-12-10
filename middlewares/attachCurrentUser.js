@@ -1,4 +1,4 @@
-import PropriedadeModel from '../models/propriedade.models.js';
+import PropriedadeModel from '../models/propriedadeSchema.models.js';
 
 async function attachCurrentUser(request, response, next) {
   try {

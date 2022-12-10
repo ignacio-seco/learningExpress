@@ -4,7 +4,7 @@
 
 import express from 'express';
 import bcrypt from 'bcrypt';
-import PropriedadeModel from '../models/propriedade.models.js';
+import PropriedadeModel from '../models/propriedadeSchema.models.js';
 import PropertyBackupModel from '../models/propertyBackup.models.js';
 import generateToken from '../config/jwt.config.js';
 import isAuth from '../middlewares/isAuth.js';
@@ -22,7 +22,7 @@ router.post('/signup', async (request, response) => {
     if (
       !password ||
       !password.match(
-        /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[$*&@!#])[0-9a-zA-Z$*!&@#]{8,}$/
+        /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z$*!&@#]{8,}$/
       )
     ) {
       return response.status(400).json({
@@ -81,6 +81,7 @@ router.put('/change', isAuth, attachCurrentUser, async (request, response) => {
     const maxRev = newBackup.backupVersion - 5; //5 aqui é a quantidade máxima de backups de cada propriedade rural
     console.log(`this is the MaxRev ${maxRev}`);
     delete newBackup._id;
+    
     await Backup.create(newBackup);
     await Backup.deleteMany({ oldId: id } && { backupVersion: maxRev });
     const newRequestBody = {
