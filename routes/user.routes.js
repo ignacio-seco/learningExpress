@@ -1,16 +1,16 @@
 //para continuar amanhã => seguir o guia da professora Karen => https://karenokasaki.notion.site/karenokasaki/Autentica-o-852509954c1747f6a156606e433ea04d
 
-import express from 'express';
-import bcrypt from 'bcrypt';
-import PropriedadeModel from '../models/propriedade.models.js';
-import generateToken from '../config/jwt.config.js';
-import isAuth from '../middlewares/isAuth.js';
-import attachCurrentUser from '../middlewares/attachCurrentUser.js';
+import express from "express";
+import bcrypt from "bcrypt";
+import PropriedadeModel from "../models/propriedade.models.js";
+import generateToken from "../config/jwt.config.js";
+import isAuth from "../middlewares/isAuth.js";
+import attachCurrentUser from "../middlewares/attachCurrentUser.js";
 const router = express.Router();
 const basemodel = PropriedadeModel;
 const saltRounds = 10;
 
-router.post('/signup', async (request, response) => {
+router.post("/signup", async (request, response) => {
   try {
     const { password } = request.body;
 
@@ -22,7 +22,7 @@ router.post('/signup', async (request, response) => {
     ) {
       return response.status(400).json({
         message:
-          'Sua senha não possui os requisitos de segurança necessários à criação da conta',
+          "Sua senha não possui os requisitos de segurança necessários à criação da conta",
       });
     }
     const salt = await bcrypt.genSalt(saltRounds);
@@ -35,63 +35,63 @@ router.post('/signup', async (request, response) => {
     return response.status(201).json(newUser);
   } catch (err) {
     console.log(err);
-    return response.status(500).json({ msg: 'Algo deu muuuito errado' });
+    return response.status(500).json({ msg: "Algo deu muuuito errado" });
   }
 });
 
-router.post('/login', async (request, response) => {
+router.post("/login", async (request, response) => {
   try {
     const { email, password } = request.body;
     const user = await basemodel.findOne({ email: email });
     if (!user) {
-      return response.status(400).json({ msg: 'Usuário não cadastrado' });
+      return response.status(400).json({ msg: "Usuário não cadastrado" });
     }
     if (await bcrypt.compare(password, user.passwordHash)) {
       delete user._doc.passwordHash;
       const token = generateToken(user);
       return response.status(200).json({ user: user, token: token });
     } else {
-      return response.status(401).json({ msg: 'Email ou senha inválido' });
+      return response.status(401).json({ msg: "Email ou senha inválido" });
     }
   } catch (err) {
     console.log(err);
-    return response.status(500).json({ msg: 'Algo deu muuuito errado' });
+    return response.status(500).json({ msg: "Algo deu muuuito errado" });
   }
 });
 
-router.get('/perfil', isAuth, attachCurrentUser, async (request, response) => {
+router.get("/perfil", isAuth, attachCurrentUser, async (request, response) => {
   try {
     const oneproperty = await basemodel
-      .findById(request.currentUser._id, {passwordHash: 0})
-      .populate(['rebanho', 'gastos', 'ganhos', 'tarefas'])
+      .findById(request.currentUser._id, { passwordHash: 0 })
+      .populate(["rebanho", "gastos", "ganhos", "tarefas"])
       .populate([
         {
-          path: 'rebanho',
-          populate: { path: 'dadosCruzamento', model: 'Cruzamento' },
+          path: "rebanho",
+          populate: { path: "dadosCruzamento", model: "Cruzamento" },
         },
         {
-          path: 'rebanho',
-          populate: { path: 'estadaCurral', model: 'CurralPermanencia' },
+          path: "rebanho",
+          populate: { path: "estadaCurral", model: "CurralPermanencia" },
         },
         {
-          path: 'rebanho',
-          populate: { path: 'historico', model: 'Historico' },
+          path: "rebanho",
+          populate: { path: "historico", model: "Historico" },
         },
-        { path: 'rebanho', populate: { path: 'pesagem', model: 'Pesagem' } },
+        { path: "rebanho", populate: { path: "pesagem", model: "Pesagem" } },
         {
-          path: 'rebanho',
-          populate: { path: 'producaoLeite', model: 'Litragem' },
+          path: "rebanho",
+          populate: { path: "producaoLeite", model: "Litragem" },
         },
       ]);
     return response.status(200).json(oneproperty);
   } catch (error) {
     console.log(error);
-    return response.status(500).json({ msg: 'Algo deu muuuito errado', error });
+    return response.status(500).json({ msg: "Algo deu muuuito errado", error });
   }
 });
 
 router.put(
-  '/alterardados',
+  "/alterardados",
   isAuth,
   attachCurrentUser,
   async (request, response) => {
@@ -104,13 +104,13 @@ router.put(
       return response.status(200).json(update);
     } catch (err) {
       console.log(err);
-      return response.status(500).json({ msg: 'Algo deu muuuito errado' });
+      return response.status(500).json({ msg: "Algo deu muuuito errado" });
     }
   }
 );
 
 router.put(
-  '/trocarsenha',
+  "/trocarsenha",
   isAuth,
   attachCurrentUser,
   async (request, response) => {
@@ -125,7 +125,7 @@ router.put(
       ) {
         return response.status(400).json({
           message:
-            'Sua senha não possui os requisitos de segurança necessários à criação da conta',
+            "Sua senha não possui os requisitos de segurança necessários à criação da conta",
         });
       }
       const salt = await bcrypt.genSalt(saltRounds);
@@ -140,13 +140,13 @@ router.put(
       return response.status(201).json(updatedUser);
     } catch (err) {
       console.log(err);
-      return response.status(500).json({ msg: 'Algo deu muuuito errado' });
+      return response.status(500).json({ msg: "Algo deu muuuito errado" });
     }
   }
 );
 
 router.delete(
-  '/delete',
+  "/delete",
   isAuth,
   attachCurrentUser,
   async (request, response) => {
@@ -165,7 +165,7 @@ router.delete(
       return response.status(200).json(deleteData);
     } catch (err) {
       console.log(err);
-      return response.status(500).json({ msg: 'Algo deu muuuito errado' });
+      return response.status(500).json({ msg: "Algo deu muuuito errado" });
     }
   }
 );

@@ -4,7 +4,7 @@ import { v4 as uuidv4 } from 'uuid';
 const cowSchema = new Schema(
   {
     creator: { type: Schema.Types.ObjectId, ref: 'Propriedade' },
-    uuid: { type: String, default: uuidv4() },
+    _id: { type: String, default: uuidv4() },
     brinco: { type: String },
     brincoDaMae: { type: String },
     dadosCompra: {

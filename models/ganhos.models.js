@@ -6,7 +6,7 @@ import { v4 as uuidv4 } from 'uuid';
 const ganhoSchema = new Schema(
   {
     creator: { type: Schema.Types.ObjectId, ref: 'Propriedade' },
-    uuid: { type: String, default: uuidv4() },
+    _id: { type: String, default: uuidv4() },
     dtGanho: {
       type: String,
       match: /([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))/,
@@ -20,6 +20,7 @@ const ganhoSchema = new Schema(
       relacao: { type: String, default: 'propriedade' },
       referencia: { type: String, default: 'ganhos' },
       lastUpdate: { type: Number, default: new Date(Date.now()).getTime() },
+      deletado: { type: Boolean, default: false, required: true },
     },
   },
   { timestamps: true }

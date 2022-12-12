@@ -5,7 +5,7 @@ import { v4 as uuidv4 } from 'uuid';
 const pesagemSchema = new Schema(
   {
     creator: { type: Schema.Types.ObjectId, ref: 'Propriedade' },
-    uuid: { type: String, default: uuidv4() },
+    _id: { type: String, default: uuidv4() },
     animal: { type: Schema.Types.ObjectId, ref: 'Cow' },
     peso: { type: Number, required: true },
     dtPesagem: {
@@ -19,6 +19,7 @@ const pesagemSchema = new Schema(
       relacao: { type: String, default: 'cow' },
       referencia: { type: String, default: 'pesagem' },
       lastUpdate: { type: Number, default: new Date(Date.now()).getTime() },
+      deletado: { type: Boolean, default: false, required: true },
     },
   },
   { timestamps: true }
