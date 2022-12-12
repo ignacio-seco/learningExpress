@@ -1,12 +1,12 @@
-import { model, Schema } from 'mongoose';
-import { formatDateToDefault } from '../helpers/helpers.js';
-import { v4 as uuidv4 } from 'uuid';
+import { model, Schema } from "mongoose";
+import { formatDateToDefault } from "../helpers/helpers.js";
+import { v4 as uuidv4 } from "uuid";
 
 const litragemSchema = new Schema(
   {
-    creator: { type: Schema.Types.ObjectId, ref: 'Propriedade' },
+    creator: { type: Schema.Types.ObjectId, ref: "Propriedade" },
     _id: { type: String, default: uuidv4() },
-    animal: { type: Schema.Types.ObjectId, ref: 'Cow' },
+    animal: { type: Schema.Types.ObjectId, ref: "Cow" },
     qtdLitros: { type: Number, required: true },
     dtVerificacao: {
       type: String,
@@ -15,9 +15,9 @@ const litragemSchema = new Schema(
       default: formatDateToDefault(new Date(Date.now())),
     },
     dadosServidor: {
-      colecao: { type: String, default: 'litragem' },
-      relacao: { type: String, default: 'cow' },
-      referencia: { type: String, default: 'producaoLeite' },
+      colecao: { type: String, default: "litragem" },
+      relacao: { type: String, default: "cow" },
+      referencia: { type: String, default: "producaoLeite" },
       lastUpdate: { type: Number, default: new Date(Date.now()).getTime() },
       deletado: { type: Boolean, default: false, required: true },
     },
@@ -25,5 +25,5 @@ const litragemSchema = new Schema(
   { timestamps: true }
 );
 
-const LitragemModel = model('Litragem', litragemSchema);
+const LitragemModel = model("Litragem", litragemSchema);
 export default LitragemModel;

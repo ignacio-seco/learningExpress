@@ -16,9 +16,7 @@ router.post("/signup", async (request, response) => {
 
     if (
       !password ||
-      !password.match(
-        /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[$*&@!#])[0-9a-zA-Z$*!&@#]{8,}$/
-      )
+      !password.match(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z$*!&@#]{8,}$/)
     ) {
       return response.status(400).json({
         message:
@@ -119,9 +117,7 @@ router.put(
 
       if (
         !password ||
-        !password.match(
-          /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[$*&@!#])[0-9a-zA-Z$*!&@#]{8,}$/
-        )
+        !password.match(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z$*!&@#]{8,}$/)
       ) {
         return response.status(400).json({
           message:
