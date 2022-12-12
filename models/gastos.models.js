@@ -5,8 +5,8 @@ import { v4 as uuidv4 } from "uuid";
 
 const gastoSchema = new Schema(
   {
-    creator: { type: Schema.Types.UUID, ref: "Propriedade" },
-    _id: { type: String, default: uuidv4() },
+    creator: { type: Schema.Types.ObjectId, ref: "Propriedade" },
+    uuid: { type: String, default: uuidv4() },
     dtGasto: {
       type: String,
       match: /([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))/,

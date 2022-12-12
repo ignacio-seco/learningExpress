@@ -4,9 +4,10 @@ import { v4 as uuidv4 } from "uuid";
 
 const pesagemSchema = new Schema(
   {
-    creator: { type: Schema.Types.UUID, ref: "Propriedade" },
-    _id: { type: String, default: uuidv4() },
-    animal: { type: Schema.Types.UUID, ref: "Cow" },
+    creator: { type: Schema.Types.ObjectId, ref: "Propriedade" },
+    uuid: { type: String, default: uuidv4() },
+    animal: { type: Schema.Types.ObjectId, ref: "Cow" },
+    animaluuid:{ type: String},
     peso: { type: Number, required: true },
     dtPesagem: {
       type: String,

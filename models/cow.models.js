@@ -3,8 +3,8 @@ import { v4 as uuidv4 } from "uuid";
 
 const cowSchema = new Schema(
   {
-    creator: { type: Schema.Types.UUID, ref: "Propriedade" },
-    _id: { type: String, default: uuidv4() },
+    creator: { type: Schema.Types.ObjectId, ref: "Propriedade" },
+    uuid: { type: String, default: uuidv4() },
     brinco: { type: String },
     brincoDaMae: { type: String },
     dadosCompra: {
@@ -19,7 +19,7 @@ const cowSchema = new Schema(
     },
     dadosCruzamentos: [
       {
-        type: Schema.Types.UUID,
+        type: Schema.Types.ObjectId,
         ref: "Cruzamento",
       },
     ],
@@ -52,13 +52,13 @@ const cowSchema = new Schema(
     },
     estadaCurral: [
       {
-        type: Schema.Types.UUID,
+        type: Schema.Types.ObjectId,
         ref: "CurralPermanencia",
       },
     ],
     historico: [
       {
-        type: Schema.Types.UUID,
+        type: Schema.Types.ObjectId,
         ref: "Historico",
       },
     ],
@@ -71,13 +71,13 @@ const cowSchema = new Schema(
     pasto: { type: String, default: "" },
     pesagem: [
       {
-        type: Schema.Types.UUID,
+        type: Schema.Types.ObjectId,
         ref: "Pesagem",
       },
     ],
     producaoLeite: [
       {
-        type: Schema.Types.UUID,
+        type: Schema.Types.ObjectId,
         ref: "Litragem",
       },
     ],

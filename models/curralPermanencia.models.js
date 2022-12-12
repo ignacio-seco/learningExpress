@@ -4,9 +4,10 @@ import { v4 as uuidv4 } from "uuid";
 
 const curralPermanenciaSchema = new Schema(
   {
-    creator: { type: Schema.Types.UUID, ref: "Propriedade" },
-    _id: { type: String, default: uuidv4() },
-    animal: { type: Schema.Types.UUID, ref: "Cow" },
+    creator: { type: Schema.Types.ObjectId, ref: "Propriedade" },
+    uuid: { type: String, default: uuidv4() },
+    animal: { type: Schema.Types.ObjectId, ref: "Cow" },
+    animaluuid:{ type: String},
     dtEntradaCurral: {
       type: String,
       match: /([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))/,
