@@ -4,7 +4,7 @@ import { v4 as uuidv4 } from "uuid";
 
 const tarefaSchema = new Schema(
   {
-    creator: { type: Schema.Types.ObjectId, ref: "Propriedade" },
+    creator: { type: Schema.Types.UUID, ref: "Propriedade" },
     _id: { type: String, default: uuidv4() },
     dtCriacao: {
       type: String,
@@ -19,8 +19,7 @@ const tarefaSchema = new Schema(
       colecao: { type: String, default: "tarefa" },
       relacao: { type: String, default: "propriedade" },
       referencia: { type: String, default: "tarefas" },
-      populaveis:{type:Array,
-        default:[]},
+      populaveis: { type: Array, default: [] },
       lastUpdate: { type: Number, default: new Date(Date.now()).getTime() },
       deletado: { type: Boolean, default: false, required: true },
     },

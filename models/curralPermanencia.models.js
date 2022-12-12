@@ -1,12 +1,12 @@
-import { model, Schema } from 'mongoose';
-import { formatDateToDefault } from '../helpers/helpers.js';
-import { v4 as uuidv4 } from 'uuid';
+import { model, Schema } from "mongoose";
+import { formatDateToDefault } from "../helpers/helpers.js";
+import { v4 as uuidv4 } from "uuid";
 
 const curralPermanenciaSchema = new Schema(
   {
-    creator: { type: Schema.Types.ObjectId, ref: 'Propriedade' },
+    creator: { type: Schema.Types.UUID, ref: "Propriedade" },
     _id: { type: String, default: uuidv4() },
-    animal: { type: Schema.Types.ObjectId, ref: 'Cow' },
+    animal: { type: Schema.Types.UUID, ref: "Cow" },
     dtEntradaCurral: {
       type: String,
       match: /([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))/,
@@ -16,14 +16,13 @@ const curralPermanenciaSchema = new Schema(
     dtSaidaCurral: {
       type: String,
       match: /(^$|([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])))/,
-      default: '',
+      default: "",
     },
     dadosServidor: {
-      colecao: { type: String, default: 'curral' },
-      relacao: { type: String, default: 'cow' },
-      referencia: { type: String, default: 'estadaCurral' },
-      populaveis:{type:Array,
-        default:[]},
+      colecao: { type: String, default: "curral" },
+      relacao: { type: String, default: "cow" },
+      referencia: { type: String, default: "estadaCurral" },
+      populaveis: { type: Array, default: [] },
       lastUpdate: { type: Number, default: new Date(Date.now()).getTime() },
       deletado: { type: Boolean, default: false, required: true },
     },
@@ -32,7 +31,7 @@ const curralPermanenciaSchema = new Schema(
 );
 
 const CurralPermanenciaModel = model(
-  'CurralPermanencia',
+  "CurralPermanencia",
   curralPermanenciaSchema
 );
 export default CurralPermanenciaModel;

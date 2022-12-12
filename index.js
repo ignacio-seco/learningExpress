@@ -10,6 +10,7 @@ import userRouter from "./routes/user.routes.js";
 import ganhosRouter from "./routes/ganhos.routes.js";
 import gastosRouter from "./routes/gastos.routes.js";
 import tarefasRouter from "./routes/tarefas.routes.js";
+import sincronizarRouter from "./routes/sync.routes.js"
 import cors from "cors";
 import { connect } from "./config/db.config.js";
 
@@ -28,6 +29,7 @@ app.use("/user", userRouter);
 app.use("/ganhos", ganhosRouter);
 app.use("/gastos", gastosRouter);
 app.use("/tarefas", tarefasRouter);
+app.use("/sincronizar", sincronizarRouter)
 
 app.listen(Number(process.env.PORT), () =>
   console.log(`Server started at port ${process.env.PORT}`)

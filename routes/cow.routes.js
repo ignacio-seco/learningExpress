@@ -41,7 +41,6 @@ router.post(
   "/new",
   isAuth,
   attachCurrentUser,
-  userIsCreator(basemodel),
   async (request, response) => {
     try {
       const id = request.currentUser._id;

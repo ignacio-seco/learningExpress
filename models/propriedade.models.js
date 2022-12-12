@@ -13,18 +13,12 @@ const propriedadeSchema = new Schema(
     },
     passwordHash: { type: String, required: true },
     role: { type: String, enum: ["USER", "ADMIN"], default: "USER" },
-    creator: { type: Schema.Types.ObjectId, ref: "User" },
     _id: { type: String, default: uuidv4() },
-    rebanho: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: "Cow",
-      },
-    ],
+    rebanho: [{ type: Schema.Types.UUID, ref: "Cow" }],
     pastos: [String],
-    gastos: [{ type: Schema.Types.ObjectId, ref: "Gasto" }],
-    ganhos: [{ type: Schema.Types.ObjectId, ref: "Ganho" }],
-    tarefas: [{ type: Schema.Types.ObjectId, ref: "Tarefa" }],
+    gastos: [{ type: Schema.Types.UUID, ref: "Gasto" }],
+    ganhos: [{ type: Schema.Types.UUID, ref: "Ganho" }],
+    tarefas: [{ type: Schema.Types.UUID, ref: "Tarefa" }],
     dadosServidor: {
       colecao: { type: String, default: "propriedade" },
       relacao: { type: String },

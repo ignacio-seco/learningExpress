@@ -1,12 +1,12 @@
-import { model, Schema } from 'mongoose';
-import { calculateBirthDate, formatDateToDefault } from '../helpers/helpers.js';
-import { v4 as uuidv4 } from 'uuid';
+import { model, Schema } from "mongoose";
+import { calculateBirthDate, formatDateToDefault } from "../helpers/helpers.js";
+import { v4 as uuidv4 } from "uuid";
 
 const historicoSchema = new Schema(
   {
-    creator: { type: Schema.Types.ObjectId, ref: 'Propriedade' },
+    creator: { type: Schema.Types.UUID, ref: "Propriedade" },
     _id: { type: String, default: uuidv4() },
-    animal: { type: Schema.Types.ObjectId, ref: 'Cow' },
+    animal: { type: Schema.Types.UUID, ref: "Cow" },
     dtHistorico: {
       type: String,
       match: /([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))/,
@@ -15,11 +15,10 @@ const historicoSchema = new Schema(
     },
     descricao: { type: String, required: true },
     dadosServidor: {
-      colecao: { type: String, default: 'historico' },
-      relacao: { type: String, default: 'cow' },
-      referencia: { type: String, default: 'historico' },
-      populaveis:{type:Array,
-        default:[]},
+      colecao: { type: String, default: "historico" },
+      relacao: { type: String, default: "cow" },
+      referencia: { type: String, default: "historico" },
+      populaveis: { type: Array, default: [] },
       lastUpdate: { type: Number, default: new Date(Date.now()).getTime() },
       deletado: { type: Boolean, default: false, required: true },
     },
@@ -27,5 +26,5 @@ const historicoSchema = new Schema(
   { timestamps: true }
 );
 
-const HistoricoModel = model('Historico', historicoSchema);
+const HistoricoModel = model("Historico", historicoSchema);
 export default HistoricoModel;

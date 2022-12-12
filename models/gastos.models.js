@@ -1,11 +1,11 @@
 //todo
-import { model, Schema } from 'mongoose';
-import { formatDateToDefault } from '../helpers/helpers.js';
-import { v4 as uuidv4 } from 'uuid';
+import { model, Schema } from "mongoose";
+import { formatDateToDefault } from "../helpers/helpers.js";
+import { v4 as uuidv4 } from "uuid";
 
 const gastoSchema = new Schema(
   {
-    creator: { type: Schema.Types.ObjectId, ref: 'Propriedade' },
+    creator: { type: Schema.Types.UUID, ref: "Propriedade" },
     _id: { type: String, default: uuidv4() },
     dtGasto: {
       type: String,
@@ -16,11 +16,10 @@ const gastoSchema = new Schema(
     valor: { type: Number, required: true, default: 0 },
     descricao: { type: String, required: true },
     dadosServidor: {
-      colecao: { type: String, default: 'gastos' },
-      relacao: { type: String, default: 'propriedade' },
-      referencia: { type: String, default: 'gastos' },
-      populaveis:{type:Array,
-        default:[]},
+      colecao: { type: String, default: "gastos" },
+      relacao: { type: String, default: "propriedade" },
+      referencia: { type: String, default: "gastos" },
+      populaveis: { type: Array, default: [] },
       lastUpdate: { type: Number, default: new Date(Date.now()).getTime() },
       deletado: { type: Boolean, default: false, required: true },
     },
@@ -28,5 +27,5 @@ const gastoSchema = new Schema(
   { timestamps: true }
 );
 
-const GastoModel = model('Gasto', gastoSchema);
+const GastoModel = model("Gasto", gastoSchema);
 export default GastoModel;

@@ -1,12 +1,12 @@
-import { model, Schema } from 'mongoose';
-import { calculateBirthDate, formatDateToDefault } from '../helpers/helpers.js';
-import { v4 as uuidv4 } from 'uuid';
+import { model, Schema } from "mongoose";
+import { calculateBirthDate, formatDateToDefault } from "../helpers/helpers.js";
+import { v4 as uuidv4 } from "uuid";
 
 const pesagemSchema = new Schema(
   {
-    creator: { type: Schema.Types.ObjectId, ref: 'Propriedade' },
+    creator: { type: Schema.Types.UUID, ref: "Propriedade" },
     _id: { type: String, default: uuidv4() },
-    animal: { type: Schema.Types.ObjectId, ref: 'Cow' },
+    animal: { type: Schema.Types.UUID, ref: "Cow" },
     peso: { type: Number, required: true },
     dtPesagem: {
       type: String,
@@ -15,11 +15,10 @@ const pesagemSchema = new Schema(
       default: formatDateToDefault(new Date(Date.now())),
     },
     dadosServidor: {
-      colecao: { type: String, default: 'pesagem' },
-      relacao: { type: String, default: 'cow' },
-      referencia: { type: String, default: 'pesagem' },
-      populaveis:{type:Array,
-        default:[]},
+      colecao: { type: String, default: "pesagem" },
+      relacao: { type: String, default: "cow" },
+      referencia: { type: String, default: "pesagem" },
+      populaveis: { type: Array, default: [] },
       lastUpdate: { type: Number, default: new Date(Date.now()).getTime() },
       deletado: { type: Boolean, default: false, required: true },
     },
@@ -27,5 +26,5 @@ const pesagemSchema = new Schema(
   { timestamps: true }
 );
 
-const PesagemModel = model('Pesagem', pesagemSchema);
+const PesagemModel = model("Pesagem", pesagemSchema);
 export default PesagemModel;

@@ -3,7 +3,7 @@ import { v4 as uuidv4 } from "uuid";
 
 const cowSchema = new Schema(
   {
-    creator: { type: Schema.Types.ObjectId, ref: "Propriedade" },
+    creator: { type: Schema.Types.UUID, ref: "Propriedade" },
     _id: { type: String, default: uuidv4() },
     brinco: { type: String },
     brincoDaMae: { type: String },
@@ -19,7 +19,7 @@ const cowSchema = new Schema(
     },
     dadosCruzamentos: [
       {
-        type: Schema.Types.ObjectId,
+        type: Schema.Types.UUID,
         ref: "Cruzamento",
       },
     ],
@@ -52,13 +52,13 @@ const cowSchema = new Schema(
     },
     estadaCurral: [
       {
-        type: Schema.Types.ObjectId,
+        type: Schema.Types.UUID,
         ref: "CurralPermanencia",
       },
     ],
     historico: [
       {
-        type: Schema.Types.ObjectId,
+        type: Schema.Types.UUID,
         ref: "Historico",
       },
     ],
@@ -71,17 +71,18 @@ const cowSchema = new Schema(
     pasto: { type: String, default: "" },
     pesagem: [
       {
-        type: Schema.Types.ObjectId,
+        type: Schema.Types.UUID,
         ref: "Pesagem",
       },
     ],
     producaoLeite: [
       {
-        type: Schema.Types.ObjectId,
+        type: Schema.Types.UUID,
         ref: "Litragem",
       },
     ],
     sexo: { type: String, enum: ["MACHO", "FEMEA"], required: true },
+    dadosVacinas: { type: Array, default: [] },
     dadosServidor: {
       colecao: { type: String, default: "cow" },
       relacao: { type: String, default: "propriedade" },
@@ -94,7 +95,7 @@ const cowSchema = new Schema(
           "pesagem",
           "historico",
           "producaoLeite",
-          "dadosVacina",
+          "dadosVacinas",
         ],
       },
       lastUpdate: { type: Number, default: new Date(Date.now()).getTime() },
