@@ -19,6 +19,8 @@ const tarefaSchema = new Schema(
       colecao: { type: String, default: "tarefa" },
       relacao: { type: String, default: "propriedade" },
       referencia: { type: String, default: "tarefas" },
+      populaveis:{type:Array,
+        default:[]},
       lastUpdate: { type: Number, default: new Date(Date.now()).getTime() },
       deletado: { type: Boolean, default: false, required: true },
     },

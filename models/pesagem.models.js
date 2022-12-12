@@ -18,6 +18,8 @@ const pesagemSchema = new Schema(
       colecao: { type: String, default: 'pesagem' },
       relacao: { type: String, default: 'cow' },
       referencia: { type: String, default: 'pesagem' },
+      populaveis:{type:Array,
+        default:[]},
       lastUpdate: { type: Number, default: new Date(Date.now()).getTime() },
       deletado: { type: Boolean, default: false, required: true },
     },

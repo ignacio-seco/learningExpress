@@ -18,6 +18,8 @@ const litragemSchema = new Schema(
       colecao: { type: String, default: "litragem" },
       relacao: { type: String, default: "cow" },
       referencia: { type: String, default: "producaoLeite" },
+      populaveis:{type:Array,
+        default:[]},
       lastUpdate: { type: Number, default: new Date(Date.now()).getTime() },
       deletado: { type: Boolean, default: false, required: true },
     },

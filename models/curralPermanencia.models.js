@@ -22,6 +22,8 @@ const curralPermanenciaSchema = new Schema(
       colecao: { type: String, default: 'curral' },
       relacao: { type: String, default: 'cow' },
       referencia: { type: String, default: 'estadaCurral' },
+      populaveis:{type:Array,
+        default:[]},
       lastUpdate: { type: Number, default: new Date(Date.now()).getTime() },
       deletado: { type: Boolean, default: false, required: true },
     },

@@ -19,6 +19,8 @@ const gastoSchema = new Schema(
       colecao: { type: String, default: 'gastos' },
       relacao: { type: String, default: 'propriedade' },
       referencia: { type: String, default: 'gastos' },
+      populaveis:{type:Array,
+        default:[]},
       lastUpdate: { type: Number, default: new Date(Date.now()).getTime() },
       deletado: { type: Boolean, default: false, required: true },
     },

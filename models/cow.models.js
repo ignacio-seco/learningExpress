@@ -1,9 +1,9 @@
-import { model, Schema } from 'mongoose';
-import { v4 as uuidv4 } from 'uuid';
+import { model, Schema } from "mongoose";
+import { v4 as uuidv4 } from "uuid";
 
 const cowSchema = new Schema(
   {
-    creator: { type: Schema.Types.ObjectId, ref: 'Propriedade' },
+    creator: { type: Schema.Types.ObjectId, ref: "Propriedade" },
     _id: { type: String, default: uuidv4() },
     brinco: { type: String },
     brincoDaMae: { type: String },
@@ -12,7 +12,7 @@ const cowSchema = new Schema(
       dtCompra: {
         type: String,
         match: /(^$|([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])))/,
-        default: '',
+        default: "",
       },
       valorCompra: { type: Number },
       vendedor: { type: String },
@@ -20,7 +20,7 @@ const cowSchema = new Schema(
     dadosCruzamentos: [
       {
         type: Schema.Types.ObjectId,
-        ref: 'Cruzamento',
+        ref: "Cruzamento",
       },
     ],
     dadosMorte: {
@@ -28,9 +28,9 @@ const cowSchema = new Schema(
       dtMorte: {
         type: String,
         match: /(^$|([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])))/,
-        default: '',
+        default: "",
       },
-      causaMorte: { type: String, default: '' },
+      causaMorte: { type: String, default: "" },
     },
     dtNascimento: {
       type: String,
@@ -47,50 +47,61 @@ const cowSchema = new Schema(
       dtVenda: {
         type: String,
         match: /(^$|([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])))/,
-        default: '',
+        default: "",
       },
     },
     estadaCurral: [
       {
         type: Schema.Types.ObjectId,
-        ref: 'CurralPermanencia',
+        ref: "CurralPermanencia",
       },
     ],
     historico: [
       {
         type: Schema.Types.ObjectId,
-        ref: 'Historico',
+        ref: "Historico",
       },
     ],
     imagem_url: {
       type: String,
-      default: 'https://pngimg.com/uploads/cow/cow_PNG50576.png',
+      default: "https://pngimg.com/uploads/cow/cow_PNG50576.png",
     },
     noCurral: { type: Boolean, default: false },
     nome: { type: String, required: true },
-    pasto: { type: String, default: '' },
+    pasto: { type: String, default: "" },
     pesagem: [
       {
         type: Schema.Types.ObjectId,
-        ref: 'Pesagem',
+        ref: "Pesagem",
       },
     ],
     producaoLeite: [
       {
         type: Schema.Types.ObjectId,
-        ref: 'Litragem',
+        ref: "Litragem",
       },
     ],
-    sexo: { type: String, enum: ['MACHO', 'FEMEA'], required: true },
+    sexo: { type: String, enum: ["MACHO", "FEMEA"], required: true },
     dadosServidor: {
-      colecao: { type: String, default: 'cow' },
-      relacao: { type: String, default: 'propriedade' },
-      referencia: { type: String, default: 'rebanho' },
+      colecao: { type: String, default: "cow" },
+      relacao: { type: String, default: "propriedade" },
+      referencia: { type: String, default: "rebanho" },
+      populaveis: {
+        type: Array,
+        default: [
+          "dadosCruzamentos",
+          "estadaCurral",
+          "pesagem",
+          "historico",
+          "producaoLeite",
+          "dadosVacina",
+        ],
+      },
       lastUpdate: { type: Number, default: new Date(Date.now()).getTime() },
       deletado: { type: Boolean, default: false, required: true },
     },
   },
   { timestamps: true }
 );
-const CowModel = model('Cow', cowSchema);
+const CowModel = model("Cow", cowSchema);
 export default CowModel;
