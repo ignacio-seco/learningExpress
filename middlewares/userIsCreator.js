@@ -3,12 +3,12 @@ const userIsCreator = (baseModel) => {
     try {
       const data = await baseModel.findById(request.params);
       if (!data) {
-        return response.status(400).json({ erro: 'informação não localizada' });
+        return response.status(400).json({ erro: "informação não localizada" });
       }
-      if (request.CurrentUser._id !== data.creator) {
+      if (request.currentUser._id !== data.creator) {
         return response
           .status(401)
-          .json({ erro: 'usuário não pode realizar esta requisição' });
+          .json({ erro: "usuário não pode realizar esta requisição" });
       }
       request.currentData = data;
       next();
