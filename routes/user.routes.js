@@ -6,26 +6,33 @@ import PropriedadeModel from "../models/propriedade.models.js";
 import generateToken from "../config/jwt.config.js";
 import isAuth from "../middlewares/isAuth.js";
 import attachCurrentUser from "../middlewares/attachCurrentUser.js";
+import mongoose from "mongoose";
 const router = express.Router();
-const basemodel = PropriedadeModel;
 const saltRounds = 10;
 
 router.post("/signup", async (request, response) => {
   try {
-    const { password } = request.body;
+    const { nome, email, password } = request.body;
+    
+    if (!nome || !email || !password ){
+      return response.status(400).json({
+        errorMessage:
+            "Você precisa preencher todos os campos",
+      });
+    }
 
     if (
       !password ||
       !password.match(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z$*!&@#]{8,}$/)
     ) {
       return response.status(400).json({
-        message:
+        errorMessage:
           "Sua senha não possui os requisitos de segurança necessários à criação da conta",
       });
     }
     const salt = await bcrypt.genSalt(saltRounds);
     const hashedPassword = await bcrypt.hash(password, salt);
-    const newUser = await basemodel.create({
+    const newUser = await PropriedadeModel.create({
       ...request.body,
       passwordHash: hashedPassword,
     });
@@ -33,14 +40,21 @@ router.post("/signup", async (request, response) => {
     return response.status(201).json(newUser);
   } catch (err) {
     console.log(err);
-    return response.status(500).json({ msg: "Algo deu muuuito errado" });
+    if (err instanceof mongoose.Error.ValidationError) {
+      return response.status(500).json( { errorMessage: err.message });
+    } else if (err.code === 11000) {
+      return response.status(500).json({
+        errorMessage: 'Username and email need to be unique. Either username or email is already used.'
+      });
+    }
+    return response.status(500).json({ errorMessage: "Algo deu muuuito errado" });
   }
 });
 
 router.post("/login", async (request, response) => {
   try {
     const { email, password } = request.body;
-    const user = await basemodel.findOne({ email: email });
+    const user = await PropriedadeModel.findOne({ email: email });
     if (!user) {
       return response.status(400).json({ msg: "Usuário não cadastrado" });
     }
@@ -59,10 +73,10 @@ router.post("/login", async (request, response) => {
 
 router.get("/perfil", isAuth, attachCurrentUser, async (request, response) => {
   try {
-    const oneproperty = await basemodel
+    const oneproperty = await PropriedadeModel
       .findById(request.currentUser._id, { passwordHash: 0 })
       .populate(["rebanho", "gastos", "ganhos", "tarefas"])
-      .populate([
+      .populate([ 
         {
           path: "rebanho",
           populate: { path: "dadosCruzamentos", model: "Cruzamento" },
@@ -94,7 +108,7 @@ router.put(
   attachCurrentUser,
   async (request, response) => {
     try {
-      const update = await basemodel.findByIdAndUpdate(
+      const update = await PropriedadeModel.findByIdAndUpdate(
         request.currentUser._id,
         { ...request.body },
         { new: true, runValidators: true }
@@ -126,7 +140,7 @@ router.put(
       }
       const salt = await bcrypt.genSalt(saltRounds);
       const hashedPassword = await bcrypt.hash(password, salt);
-      const updatedUser = await basemodel.findByIdAndUpdate(
+      const updatedUser = await PropriedadeModel.findByIdAndUpdate(
         request.currentUser._id,
         {
           passwordHash: hashedPassword,
@@ -148,7 +162,7 @@ router.delete(
   async (request, response) => {
     try {
       const id = request.currentUser._id;
-      const deleteData = await basemodel.findByIdAndDelete(id);
+      const deleteData = await PropriedadeModel.findByIdAndDelete(id);
       await CowModel.deleteMany({ creator: id });
       await CruzamentoModel.deleteMany({ creator: id });
       await CurralPermanenciaModel.deleteMany({ creator: id });
