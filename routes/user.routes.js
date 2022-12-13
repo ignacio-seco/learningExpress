@@ -32,8 +32,10 @@ router.post("/signup", async (request, response) => {
     delete newUser._doc.passwordHash;
     return response.status(201).json(newUser);
   } catch (err) {
-    console.log(err);
-    return response.status(500).json({ msg: "Algo deu muuuito errado" });
+    console.log("this was the error:",err);
+    if(err.code===11000){
+    return response.status(500).json({ msg: "Usuário já cadastrado em nosso banco de dados"})}
+    else{return response.status(500).json({ msg: "Sua requisição falhou, tente de novo"})};
   }
 });
 
@@ -42,7 +44,7 @@ router.post("/login", async (request, response) => {
     const { email, password } = request.body;
     const user = await basemodel.findOne({ email: email });
     if (!user) {
-      return response.status(400).json({ msg: "Usuário não cadastrado" });
+      return response.status(400).json({ msg: "Usuário não cadastrado. Faça seu cadastro!" });
     }
     if (await bcrypt.compare(password, user.passwordHash)) {
       delete user._doc.passwordHash;
