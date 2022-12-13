@@ -13,11 +13,10 @@ const saltRounds = 10;
 router.post("/signup", async (request, response) => {
   try {
     const { nome, email, password } = request.body;
-    
-    if (!nome || !email || !password ){
+
+    if (!nome || !email || !password) {
       return response.status(400).json({
-        errorMessage:
-            "Você precisa preencher todos os campos",
+        errorMessage: "Você precisa preencher todos os campos",
       });
     }
 
@@ -41,13 +40,15 @@ router.post("/signup", async (request, response) => {
   } catch (err) {
     console.log(err);
     if (err instanceof mongoose.Error.ValidationError) {
-      return response.status(500).json( { errorMessage: err.message });
+      return response.status(500).json({ errorMessage: err.message });
     } else if (err.code === 11000) {
       return response.status(500).json({
-        errorMessage: 'Username and email need to be unique. Either username or email is already used.'
+        errorMessage: "Usuário já cadastrado! Faça seu login!",
       });
     }
-    return response.status(500).json({ errorMessage: "Algo deu muuuito errado" });
+    return response
+      .status(500)
+      .json({ errorMessage: "Algo deu muuuito errado" });
   }
 });
 
@@ -56,27 +57,35 @@ router.post("/login", async (request, response) => {
     const { email, password } = request.body;
     const user = await PropriedadeModel.findOne({ email: email });
     if (!user) {
-      return response.status(400).json({ msg: "Usuário não cadastrado" });
+      return response
+        .status(400)
+        .json({ errorMessage: "Usuário não cadastrado" });
     }
     if (await bcrypt.compare(password, user.passwordHash)) {
       delete user._doc.passwordHash;
       const token = generateToken(user);
       return response.status(200).json({ user: user, token: token });
     } else {
-      return response.status(401).json({ msg: "Email ou senha inválido" });
+      return response
+        .status(401)
+        .json({ errorMessage: "Email ou senha inválido" });
     }
   } catch (err) {
     console.log(err);
-    return response.status(500).json({ msg: "Algo deu muuuito errado" });
+    return response
+      .status(500)
+      .json({ errorMessage: "Algo deu muuuito errado" });
   }
 });
 
 router.get("/perfil", isAuth, attachCurrentUser, async (request, response) => {
   try {
-    const oneproperty = await PropriedadeModel
-      .findById(request.currentUser._id, { passwordHash: 0 })
+    const oneproperty = await PropriedadeModel.findById(
+      request.currentUser._id,
+      { passwordHash: 0 }
+    )
       .populate(["rebanho", "gastos", "ganhos", "tarefas"])
-      .populate([ 
+      .populate([
         {
           path: "rebanho",
           populate: { path: "dadosCruzamentos", model: "Cruzamento" },
@@ -98,7 +107,9 @@ router.get("/perfil", isAuth, attachCurrentUser, async (request, response) => {
     return response.status(200).json(oneproperty);
   } catch (error) {
     console.log(error);
-    return response.status(500).json({ msg: "Algo deu muuuito errado", error });
+    return response
+      .status(500)
+      .json({ errorMessage: "Algo deu muuuito errado", error });
   }
 });
 
@@ -116,7 +127,9 @@ router.put(
       return response.status(200).json(update);
     } catch (err) {
       console.log(err);
-      return response.status(500).json({ msg: "Algo deu muuuito errado" });
+      return response
+        .status(500)
+        .json({ errorMessage: "Algo deu muuuito errado" });
     }
   }
 );
@@ -150,7 +163,9 @@ router.put(
       return response.status(201).json(updatedUser);
     } catch (err) {
       console.log(err);
-      return response.status(500).json({ msg: "Algo deu muuuito errado" });
+      return response
+        .status(500)
+        .json({ errorMessage: "Algo deu muuuito errado" });
     }
   }
 );
@@ -175,7 +190,9 @@ router.delete(
       return response.status(200).json(deleteData);
     } catch (err) {
       console.log(err);
-      return response.status(500).json({ msg: "Algo deu muuuito errado" });
+      return response
+        .status(500)
+        .json({ errorMessage: "Algo deu muuuito errado" });
     }
   }
 );

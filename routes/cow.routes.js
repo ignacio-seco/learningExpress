@@ -33,29 +33,28 @@ router.get(
       return response.status(200).json(oneCaw);
     } catch (err) {
       console.log(err);
-      return response.status(500).json({ msg: "Algo deu muuuito errado" });
+      return response
+        .status(500)
+        .json({ errorMessage: "Algo deu muuuito errado" });
     }
   }
 );
-router.post(
-  "/new",
-  isAuth,
-  attachCurrentUser,
-  async (request, response) => {
-    try {
-      const id = request.currentUser._id;
-      const newCow = await basemodel.create({ ...request.body, creator: id });
-      await relationModel.findByIdAndUpdate(id, {
-        $push: { rebanho: newCow._id },
-      });
+router.post("/new", isAuth, attachCurrentUser, async (request, response) => {
+  try {
+    const id = request.currentUser._id;
+    const newCow = await basemodel.create({ ...request.body, creator: id });
+    await relationModel.findByIdAndUpdate(id, {
+      $push: { rebanho: newCow._id },
+    });
 
-      return response.status(201).json(newCow);
-    } catch (err) {
-      console.log(err);
-      return response.status(500).json({ msg: "Algo deu muuuito errado" });
-    }
+    return response.status(201).json(newCow);
+  } catch (err) {
+    console.log(err);
+    return response
+      .status(500)
+      .json({ errorMessage: "Algo deu muuuito errado" });
   }
-);
+});
 
 router.put("/change/:id", async (request, response) => {
   try {
@@ -68,7 +67,9 @@ router.put("/change/:id", async (request, response) => {
     return response.status(200).json(update);
   } catch (err) {
     console.log(err);
-    return response.status(500).json({ msg: "Algo deu muuuito errado" });
+    return response
+      .status(500)
+      .json({ errorMessage: "Algo deu muuuito errado" });
   }
 });
 
@@ -87,7 +88,9 @@ router.delete("/delete/:id", async (request, response) => {
     return response.status(200).json(deleteCow);
   } catch (err) {
     console.log(err);
-    return response.status(500).json({ msg: "Algo deu muuuito errado" });
+    return response
+      .status(500)
+      .json({ errorMessage: "Algo deu muuuito errado" });
   }
 });
 
