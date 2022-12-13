@@ -382,7 +382,9 @@ router.put("/", isAuth, attachCurrentUser, async (request, response) => {
     return response.status(200).json(oneproperty);
   } catch (err) {
     console.log(err);
-    return response.status(500).json({ msg: "Algo deu muuuito errado" });
+    return response
+      .status(500)
+      .json({ errorMessage: "Algo deu muuuito errado" });
   }
 });
 

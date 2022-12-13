@@ -63,7 +63,7 @@ const cowSchema = new Schema(
     },
     noCurral: { type: Boolean, default: false },
     nome: { type: String, required: true },
-    pasto: { type: String, default: "" },
+    pasto: { type: String, default:"sem pasto definido"},
     pesagem: [
       {
         type: Schema.Types.ObjectId,

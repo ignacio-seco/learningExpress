@@ -1,16 +1,16 @@
-import express from 'express';
-import attachCurrentUser from '../middlewares/attachCurrentUser.js';
-import isAuth from '../middlewares/isAuth.js';
-import userIsCreator from '../middlewares/userIsCreator.js';
-import CowModel from '../models/cow.models.js';
-import CurralPermanenciaModel from '../models/curralPermanencia.models.js';
+import express from "express";
+import attachCurrentUser from "../middlewares/attachCurrentUser.js";
+import isAuth from "../middlewares/isAuth.js";
+import userIsCreator from "../middlewares/userIsCreator.js";
+import CowModel from "../models/cow.models.js";
+import CurralPermanenciaModel from "../models/curralPermanencia.models.js";
 const router = express.Router();
 
 const basemodel = CurralPermanenciaModel;
 const relationModel = CowModel;
 
 router.get(
-  '/:id',
+  "/:id",
   isAuth,
   attachCurrentUser,
   userIsCreator(basemodel),
@@ -19,13 +19,15 @@ router.get(
       return response.status(200).json(request.currentData);
     } catch (err) {
       console.log(err);
-      return response.status(500).json({ msg: 'Algo deu muuuito errado' });
+      return response
+        .status(500)
+        .json({ errorMessage: "Algo deu muuuito errado" });
     }
   }
 );
 
 router.post(
-  '/new/:animalId',
+  "/new/:animalId",
   isAuth,
   attachCurrentUser,
   async (request, response) => {
@@ -44,13 +46,15 @@ router.post(
       return response.status(201).json(newData);
     } catch (err) {
       console.log(err);
-      return response.status(500).json({ msg: 'Algo deu muuuito errado' });
+      return response
+        .status(500)
+        .json({ errorMessage: "Algo deu muuuito errado" });
     }
   }
 );
 
 router.put(
-  '/change/:id',
+  "/change/:id",
   isAuth,
   attachCurrentUser,
   userIsCreator(basemodel),
@@ -65,13 +69,15 @@ router.put(
       return response.status(200).json(update);
     } catch (err) {
       console.log(err);
-      return response.status(500).json({ msg: 'Algo deu muuuito errado' });
+      return response
+        .status(500)
+        .json({ errorMessage: "Algo deu muuuito errado" });
     }
   }
 );
 
 router.delete(
-  '/delete/:id',
+  "/delete/:id",
   isAuth,
   attachCurrentUser,
   userIsCreator(basemodel),
@@ -85,7 +91,9 @@ router.delete(
       return response.status(200).json(deleteData);
     } catch (err) {
       console.log(err);
-      return response.status(500).json({ msg: 'Algo deu muuuito errado' });
+      return response
+        .status(500)
+        .json({ errorMessage: "Algo deu muuuito errado" });
     }
   }
 );

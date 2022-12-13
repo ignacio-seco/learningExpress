@@ -1,16 +1,16 @@
-import express from 'express';
-import attachCurrentUser from '../middlewares/attachCurrentUser.js';
-import isAuth from '../middlewares/isAuth.js';
-import userIsCreator from '../middlewares/userIsCreator.js';
-import GanhoModel from '../models/ganhos.models.js';
-import PropriedadeModel from '../models/propriedade.models.js';
+import express from "express";
+import attachCurrentUser from "../middlewares/attachCurrentUser.js";
+import isAuth from "../middlewares/isAuth.js";
+import userIsCreator from "../middlewares/userIsCreator.js";
+import GanhoModel from "../models/ganhos.models.js";
+import PropriedadeModel from "../models/propriedade.models.js";
 const router = express.Router();
 
 const basemodel = GanhoModel;
 const relationModel = PropriedadeModel;
 
 router.get(
-  '/:id',
+  "/:id",
   isAuth,
   attachCurrentUser,
   userIsCreator(basemodel),
@@ -19,12 +19,14 @@ router.get(
       return response.status(200).json(request.currentData);
     } catch (err) {
       console.log(err);
-      return response.status(500).json({ msg: 'Algo deu muuuito errado' });
+      return response
+        .status(500)
+        .json({ errorMessage: "Algo deu muuuito errado" });
     }
   }
 );
 
-router.post('/new', isAuth, attachCurrentUser, async (request, response) => {
+router.post("/new", isAuth, attachCurrentUser, async (request, response) => {
   try {
     const id = request.currentUser._id;
     const newData = await basemodel.create({
@@ -38,11 +40,13 @@ router.post('/new', isAuth, attachCurrentUser, async (request, response) => {
     return response.status(201).json(newData);
   } catch (err) {
     console.log(err);
-    return response.status(500).json({ msg: 'Algo deu muuuito errado' });
+    return response
+      .status(500)
+      .json({ errorMessage: "Algo deu muuuito errado" });
   }
 });
 
-router.put('/change/:id', async (request, response) => {
+router.put("/change/:id", async (request, response) => {
   try {
     const { id } = request.params;
     const update = await basemodel.findByIdAndUpdate(
@@ -53,11 +57,13 @@ router.put('/change/:id', async (request, response) => {
     return response.status(200).json(update);
   } catch (err) {
     console.log(err);
-    return response.status(500).json({ msg: 'Algo deu muuuito errado' });
+    return response
+      .status(500)
+      .json({ errorMessage: "Algo deu muuuito errado" });
   }
 });
 
-router.delete('/delete/:id', async (request, response) => {
+router.delete("/delete/:id", async (request, response) => {
   try {
     const { id } = request.params;
     const deleteData = await basemodel.findByIdAndDelete(id);
@@ -67,7 +73,9 @@ router.delete('/delete/:id', async (request, response) => {
     return response.status(200).json(deleteData);
   } catch (err) {
     console.log(err);
-    return response.status(500).json({ msg: 'Algo deu muuuito errado' });
+    return response
+      .status(500)
+      .json({ errorMessage: "Algo deu muuuito errado" });
   }
 });
 
