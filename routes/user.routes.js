@@ -65,7 +65,7 @@ router.get("/perfil", isAuth, attachCurrentUser, async (request, response) => {
       .populate([
         {
           path: "rebanho",
-          populate: { path: "dadosCruzamento", model: "Cruzamento" },
+          populate: { path: "dadosCruzamentos", model: "Cruzamento" },
         },
         {
           path: "rebanho",

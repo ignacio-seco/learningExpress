@@ -7,7 +7,7 @@ const pesagemSchema = new Schema(
     creator: { type: Schema.Types.ObjectId, ref: "Propriedade" },
     uuid: { type: String, default: uuidv4() },
     animal: { type: Schema.Types.ObjectId, ref: "Cow" },
-    animaluuid:{ type: String},
+    animaluuid: { type: String },
     peso: { type: Number, required: true },
     dtPesagem: {
       type: String,
