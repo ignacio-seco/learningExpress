@@ -15,7 +15,7 @@ import cors from "cors";
 import { connect } from "./config/db.config.js";
 
 dotenv.config();
-connect();
+
 const app = express();
 app.use(cors());
 app.use(express.json());
@@ -31,6 +31,6 @@ app.use("/gastos", gastosRouter);
 app.use("/tarefas", tarefasRouter);
 app.use("/sincronizar", sincronizarRouter)
 
-app.listen(Number(process.env.PORT), () =>
+connect().then(()=>{app.listen(Number(process.env.PORT), () =>
   console.log(`Server started at port ${process.env.PORT}`)
-);
+)});
