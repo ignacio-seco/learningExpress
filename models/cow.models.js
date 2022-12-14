@@ -17,7 +17,7 @@ const cowSchema = new Schema(
       valorCompra: { type: Number },
       vendedor: { type: String },
     },
-    dadosCruzamentos: [{type: Schema.Types.ObjectId, ref: "Cruzamento"}],
+    dadosCruzamentos: [{ type: Schema.Types.ObjectId, ref: "Cruzamento" }],
     dadosMorte: {
       morreu: { type: Boolean, default: false },
       dtMorte: {
@@ -63,7 +63,7 @@ const cowSchema = new Schema(
     },
     noCurral: { type: Boolean, default: false },
     nome: { type: String, required: true },
-    pasto: { type: String, default:"sem pasto definido"},
+    pasto: { type: String, default: "sem pasto definido" },
     pesagem: [
       {
         type: Schema.Types.ObjectId,
