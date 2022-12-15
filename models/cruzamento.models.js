@@ -23,6 +23,7 @@ const cruzamentoSchema = new Schema(
       match: /(^$|([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])))/,
       default: "",
     },
+    confirmacaoNascimento: { type: Boolean, default: false },
     dadosServidor: {
       colecao: { type: String, default: "cruzamento" },
       relacao: { type: String, default: "cow" },

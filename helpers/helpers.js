@@ -10,20 +10,9 @@ export function formatDateToDefault(dt) {
 export function stringEqualizer(string) {
   return string
     .toLowerCase()
-    .replaceAll(/[àáãâäª]/g, 'a')
-    .replaceAll(/[éèêë]/g, 'e')
-    .replaceAll(/[íìïî]/g, 'i')
-    .replaceAll(/[õòóöô]/g, 'o')
-    .replaceAll(/[úùü]/g, 'u');
-}
-
-export function calculateBirthDate(initialDate) {
-  if (initialDate === "") {
-    return "sem dados de nascimento";
-  } else {
-    let dob = new Date(initialDate);
-    let birthTime = dob.getTime()+(283*24*60*60*1000);
-    let birthDay=formatDateToDefault(new Date(birthTime))
-    return birthDay;
-  }
+    .replaceAll(/[àáãâäª]/g, "a")
+    .replaceAll(/[éèêë]/g, "e")
+    .replaceAll(/[íìïî]/g, "i")
+    .replaceAll(/[õòóöô]/g, "o")
+    .replaceAll(/[úùü]/g, "u");
 }

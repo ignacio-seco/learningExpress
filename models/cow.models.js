@@ -45,6 +45,10 @@ const cowSchema = new Schema(
         default: "",
       },
     },
+    dadosObservação: {
+      animalObservado: { type: Boolean, default: false },
+      motivo: { type: String },
+    },
     estadaCurral: [
       {
         type: Schema.Types.ObjectId,
