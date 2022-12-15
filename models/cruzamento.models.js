@@ -23,6 +23,8 @@ const cruzamentoSchema = new Schema(
       default: "",
     },
     confirmacaoNascimento: { type: Boolean, default: false },
+    esconderCampo:{type: Boolean,
+    default:false},
     dadosServidor: {
       colecao: { type: String, default: "cruzamento" },
       relacao: { type: String, default: "cow" },
