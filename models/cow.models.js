@@ -45,7 +45,7 @@ const cowSchema = new Schema(
         default: "",
       },
     },
-    dadosObservação: {
+    dadosObservacao: {
       animalObservado: { type: Boolean, default: false },
       motivo: { type: String, default: "" },
     },
