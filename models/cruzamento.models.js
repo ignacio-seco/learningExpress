@@ -1,5 +1,4 @@
 import { model, Schema } from "mongoose";
-import { calculateBirthDate } from "../helpers/helpers.js";
 import { v4 as uuidv4 } from "uuid";
 
 const cruzamentoSchema = new Schema(
