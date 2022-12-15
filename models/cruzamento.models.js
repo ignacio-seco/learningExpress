@@ -15,7 +15,7 @@ const cruzamentoSchema = new Schema(
     },
     confirmacaoPrenhez: {
       type: Boolean,
-      default: false,
+      default: true,
     },
     dtProvavelNascimento: {
       type: String,
