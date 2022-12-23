@@ -19,6 +19,8 @@ const propriedadeSchema = new Schema(
     gastos: [{ type: Schema.Types.ObjectId, ref: "Gasto" }],
     ganhos: [{ type: Schema.Types.ObjectId, ref: "Ganho" }],
     tarefas: [{ type: Schema.Types.ObjectId, ref: "Tarefa" }],
+    lotes:{type:Array,
+    default:["sem lote definido"]},
     dadosServidor: {
       colecao: { type: String, default: "propriedade" },
       relacao: { type: String },
