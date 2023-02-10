@@ -39,7 +39,9 @@ async function createNewCows(obj, userid) {
       );
     });
     console.log("estas são as vacas sem registro", cowsWithoutRegistration);
-    cowsWithoutRegistration.forEach(async (cow) => {
+
+    // Create an array of promises that will be resolved when all calls to CowModel.create are complete
+    const promises = cowsWithoutRegistration.map(async (cow) => {
       try {
         let cowToRegister = updateObj[cow][0];
         let populaveis = cowToRegister.dadosServidor.populaveis;
@@ -62,11 +64,16 @@ async function createNewCows(obj, userid) {
         console.log(err);
       }
     });
+
+    // Wait for all promises to resolve
+    await Promise.all(promises);
+
     return updateObj;
   } catch (err) {
     console.log(err);
   }
 }
+
 
 async function itemUpdate(id, obj, colecao) {
   try {
@@ -351,10 +358,10 @@ router.put("/", isAuth, attachCurrentUser, async (request, response) => {
   try {
     console.log("este é o objeto que veio na requisição", request.body);
     let Arr = [request.body]; //colocar o objeto em uma array para a função deepSort também puxar a chave no objeto raiz
-    let sortedArray = await deepSort(Arr, "uuid"); //passo 1
-    let updateArray = await createNewCows(sortedArray, request.currentUser._id); //passo 2
-    await createAndUpdate(updateArray, modelCollections); //passo 3
-    await filterAndDelete(updateArray); //passo 4
+    let sortedArray = deepSort(Arr, "uuid"); //passo 1
+    let updateArray = await createNewCows(sortedArray, request.currentUser._id); //passo 2, a função retorna os dados da sorted array, exceto
+    createAndUpdate(updateArray, modelCollections); //passo 3
+    filterAndDelete(updateArray); //passo 4
     const oneproperty = await PropriedadeModel.findById(
       request.currentUser._id,
       { passwordHash: 0 }
@@ -379,6 +386,7 @@ router.put("/", isAuth, attachCurrentUser, async (request, response) => {
           populate: { path: "producaoLeite", model: "Litragem" },
         },
       ]);
+      console.log("============================================================================>FIM DA FUNÇÃO<=====================================================")
     return response.status(200).json(oneproperty);
   } catch (err) {
     console.log(err);
