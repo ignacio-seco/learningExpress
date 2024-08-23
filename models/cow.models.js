@@ -63,7 +63,7 @@ const cowSchema = new Schema(
     ],
     imagem_url: {
       type: String,
-      default: 'https://pngimg.com/uploads/cow/cow_PNG50576.png',
+      default: '',
     },
     imgPublicId:{type:String},
     noCurral: { type: Boolean, default: false },
