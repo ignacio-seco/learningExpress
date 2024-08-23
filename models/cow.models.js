@@ -65,6 +65,7 @@ const cowSchema = new Schema(
       type: String,
       default: 'https://pngimg.com/uploads/cow/cow_PNG50576.png',
     },
+    imgPublicId:{type:String},
     noCurral: { type: Boolean, default: false },
     nome: { type: String, required: true },
     pasto: { type: String, default: 'sem pasto definido' },

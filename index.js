@@ -13,6 +13,7 @@ import tarefasRouter from './routes/tarefas.routes.js';
 import sincronizarRouter from './routes/sync.routes.js';
 import cors from 'cors';
 import { connect } from './config/db.config.js';
+import uploadRoute from './routes/uploadImages.routes.js';
 
 dotenv.config();
 
@@ -30,6 +31,7 @@ app.use('/ganhos', ganhosRouter);
 app.use('/gastos', gastosRouter);
 app.use('/tarefas', tarefasRouter);
 app.use('/sincronizar', sincronizarRouter);
+app.use('/upImg', uploadRoute)
 
 connect().then(() => {
   app.listen(Number(process.env.PORT), () =>
