@@ -46,7 +46,8 @@ uploadRoute.post('/signature', isAuth, attachCurrentUser, async (req, res) => {
   const uploadSignature = cloudinary.utils.api_sign_request(
     {
       timestamp: timestamp,
-      folder:req.currentUser._id.toString()
+      folder:req.currentUser._id.toString(),
+      transformation:"q_auto,w_1200,c_fill"
     },
     cloudinaryConfig.api_secret
   )
