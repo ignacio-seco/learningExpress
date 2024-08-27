@@ -18,6 +18,23 @@ import uploadRoute from './routes/uploadImages.routes.js';
 dotenv.config();
 
 const app = express();
+// Configuração do CORS
+const allowedOrigins = ['https://rebanho.netlify.app'];
+
+const corsOptions = {
+  origin: function (origin, callback) {
+    if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true,  // Se você precisar suportar cookies ou autenticação de sessão
+};
+
+
 app.use(cors());
 app.use(express.json({ limit: '50mb' }));
 app.use('/animais', cowRouter);
