@@ -20,12 +20,6 @@ const cloudinaryConfig = cloudinary.config({
 
 const uploadRoute = express.Router();
 
-uploadRoute.post('/upload', uploadImg.single('picture'), (req, res) => {
-  if (!req.file) {
-    return res.status(400).json({ errorMessage: 'O upload da imagem falhou' });
-  }
-  return res.status(201).json({ url: req.file.path });
-});
 
 uploadRoute.post('/signature', isAuth, attachCurrentUser, async (req, res) => {
   let deleteSignature=null

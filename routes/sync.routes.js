@@ -75,7 +75,7 @@ async function createNewCows(obj, userid) {
 }
 
 
-async function itemUpdate(id, obj, colecao) {
+async function itemUpdate(id, obj, colecao, creator) {
   try {
     let populaveis = obj.dadosServidor.populaveis;
     populaveis.length > 0 && populaveis.forEach((key) => delete obj[key]);
@@ -91,7 +91,7 @@ async function itemUpdate(id, obj, colecao) {
         switch (obj.dadosServidor.colecao) {
           case "cow":
             //codigo da coleção vaca
-            const newCow = await CowModel.create({ ...obj });
+            const newCow = await CowModel.create({ ...obj, creator:creator });
             await PropriedadeModel.findByIdAndUpdate(newCow.creator, {
               $push: { rebanho: newCow._id },
             });
@@ -107,6 +107,7 @@ async function itemUpdate(id, obj, colecao) {
             newData = await CruzamentoModel.create({
               ...obj,
               animal: originalAnimal._id,
+              creator:creator
             });
             await CowModel.findByIdAndUpdate(newData.animal, {
               $push: { dadosCruzamentos: newData._id },
@@ -124,6 +125,7 @@ async function itemUpdate(id, obj, colecao) {
             newData = await CurralPermanenciaModel.create({
               ...obj,
               animal: originalAnimal._id,
+              creator:creator
             });
             await CowModel.findByIdAndUpdate(newData.animal, {
               $push: { estadaCurral: newData._id },
@@ -141,6 +143,7 @@ async function itemUpdate(id, obj, colecao) {
             newData = await HistoricoModel.create({
               ...obj,
               animal: originalAnimal._id,
+              creator:creator
             });
             await CowModel.findByIdAndUpdate(newData.animal, {
               $push: { historico: newData._id },
@@ -158,6 +161,7 @@ async function itemUpdate(id, obj, colecao) {
             newData = await LitragemModel.create({
               ...obj,
               animal: originalAnimal._id,
+              creator:creator
             });
             await CowModel.findByIdAndUpdate(newData.animal, {
               $push: { producaoLeite: newData._id },
@@ -174,6 +178,7 @@ async function itemUpdate(id, obj, colecao) {
             newData = await PesagemModel.create({
               ...obj,
               animal: originalAnimal._id,
+              creator:creator
             });
             await CowModel.findByIdAndUpdate(newData.animal, {
               $push: { pesagem: newData._id },
@@ -185,6 +190,7 @@ async function itemUpdate(id, obj, colecao) {
             //codigo da coleção ganhos
             newData = await GanhoModel.create({
               ...obj,
+              creator:creator
             });
             await PropriedadeModel.findByIdAndUpdate(newData.creator, {
               $push: { ganhos: newData._id },
@@ -196,6 +202,7 @@ async function itemUpdate(id, obj, colecao) {
             //codigo da coleção gastos
             newData = await GastoModel.create({
               ...obj,
+              creator:creator
             });
             await PropriedadeModel.findByIdAndUpdate(newData.creator, {
               $push: { gastos: newData._id },
@@ -206,6 +213,7 @@ async function itemUpdate(id, obj, colecao) {
             //codigo da coleção tarefa
             newData = await TarefaModel.create({
               ...obj,
+              creator:creator
             });
             await PropriedadeModel.findByIdAndUpdate(newData.creator, {
               $push: { tarefas: newData._id },
@@ -241,18 +249,22 @@ async function itemUpdate(id, obj, colecao) {
   }
 }
 
-async function createAndUpdate(dataObj, models) {
-  try {
+async function createAndUpdate(dataObj, models, creator) {
+  try{
+  
     let keysToCheck = Object.keys(dataObj);
-    await keysToCheck.forEach(async (key) => {
+      const promises = keysToCheck.forEach(async (key) => {try {
       console.log("this is the _ID we are starting to check for update", key);
       let body = dataObj[key][0];
       let model = models[body.dadosServidor.colecao];
-      await itemUpdate(key, body, model);
-    });
-  } catch (err) {
+      await itemUpdate(key, body, model, creator); } catch (err) {
     console.log(err);
   }
+    });
+    await Promise.all(promises);}
+    catch(error){
+      console.log(error)
+    }
 }
 
 async function itemToDelete(id, colecao) {
@@ -338,20 +350,27 @@ async function itemToDelete(id, colecao) {
 }
 
 async function filterAndDelete(dataObj) {
-  try {
+  try{
+  
     let keysToCheck = Object.keys(dataObj);
     let onlyDeletedKeys = keysToCheck.filter(
       (key) =>
         dataObj[key][0].dadosServidor.deletado && dataObj[key][0]._id !== ""
     );
-    await onlyDeletedKeys.forEach(async (key) => {
+    
+    let promises = onlyDeletedKeys.forEach(async (key) => {
+      try {
       let colecao = dataObj[key][0].dadosServidor.colecao;
       let idKey = dataObj[key][0]._id;
-      await itemToDelete(idKey, colecao);
-    });
-  } catch (err) {
+      await itemToDelete(idKey, colecao);} catch (err) {
     console.log(err);
   }
+    });
+    await Promise.all(promises); 
+}
+catch(error){
+  console.log(error)
+}
 }
 
 router.put("/", isAuth, attachCurrentUser, async (request, response) => {
@@ -360,7 +379,7 @@ router.put("/", isAuth, attachCurrentUser, async (request, response) => {
     let Arr = [request.body]; //colocar o objeto em uma array para a função deepSort também puxar a chave no objeto raiz
     let sortedArray = deepSort(Arr, "uuid"); //passo 1
     let updateArray = await createNewCows(sortedArray, request.currentUser._id); //passo 2, a função retorna os dados da sorted array, exceto
-    createAndUpdate(updateArray, modelCollections); //passo 3
+    createAndUpdate(updateArray, modelCollections, request.currentUser._id); //passo 3
     filterAndDelete(updateArray); //passo 4
     const oneproperty = await PropriedadeModel.findById(
       request.currentUser._id,
@@ -388,6 +407,28 @@ router.put("/", isAuth, attachCurrentUser, async (request, response) => {
       ]);
       console.log("============================================================================>FIM DA FUNÇÃO<=====================================================")
     return response.status(200).json(oneproperty);
+  } catch (err) {
+    console.log(err);
+    return response
+      .status(500)
+      .json({ errorMessage: "Algo deu muuuito errado" });
+  }
+});
+
+router.post("/send", isAuth, attachCurrentUser, async (request, response) => {
+  try {
+    const destinyUser = await PropriedadeModel.findOne({ email: request.body.dadosAnimalEnviado.destino});
+    if (!destinyUser) {
+      return response
+        .status(400)
+        .json({ errorMessage: "O usuário destinatário não está cadastrado no aplicativo" });
+    }
+    let destinyId = destinyUser._id;
+    let Arr = [request.body]; //colocar o objeto em uma array para a função deepSort também puxar a chave no objeto raiz
+    let sortedArray = deepSort(Arr, "uuid"); //passo 1
+    let updateArray = await createNewCows(sortedArray, destinyId); //passo 2, a função retorna os dados da sorted array, exceto
+    createAndUpdate(updateArray, modelCollections, destinyId); //passo 3
+    return response.status(200).json({message:"O animal foi enviado ao usuário destinatário"});
   } catch (err) {
     console.log(err);
     return response

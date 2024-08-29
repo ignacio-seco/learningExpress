@@ -102,7 +102,19 @@ const cowSchema = new Schema(
       lastUpdate: { type: Number, default: new Date(Date.now()).getTime() },
       deletado: { type: Boolean, default: false, required: true },
     },
+    dadosAnimalEnviado: {
+      enviado: { type: Boolean, default: false, required: true },
+      recebido: { type: Boolean, default: false, required: true },
+      aceito: { type: Boolean, default: true, required: true },
+      origem: { type: String },
+      destino: { type: String },
+      dtEnvio: {
+        type: String,
+        match: /(^$|([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])))/,
+        default: '',
+      },
   },
+},
   { timestamps: true }
 );
 const CowModel = model('Cow', cowSchema);
